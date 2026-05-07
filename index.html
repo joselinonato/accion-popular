@@ -17,7 +17,7 @@
         }
 
         body {
-            /* Imagen de fondo principal */
+            /* Imagen de fondo principal - fondo1.jpg está en la raíz */
             background: 
                 linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                 url('fondo1.jpg');
@@ -93,7 +93,7 @@
             border: 1px solid rgba(255, 0, 0, 0.3);
         }
 
-        /* CORRECCIÓN CRÍTICA: Asegurar que los modales estén ocultos por defecto */
+        /* Los modales están ocultos por defecto con display: none */
         .modal-overlay {
             display: none !important; 
             position: fixed;
@@ -105,7 +105,7 @@
             justify-content: center;
         }
 
-        /* Clase para mostrar el modal vía JS */
+        /* Esta clase se activa solo al hacer clic */
         .modal-overlay.active {
             display: flex !important;
         }
@@ -190,7 +190,7 @@
         </div>
     </section>
 
-    <!-- MODAL INICIO (Videos del 1 al 6) -->
+    <!-- MODAL INICIO (Nombres corregidos con espacios según GitHub) -->
     <div id="videoModal" class="modal-overlay p-4">
         <div class="relative w-full max-w-6xl">
             <button onclick="closeModal('videoModal')" class="absolute -top-12 right-0 text-white hover:text-red-600 flex items-center gap-2 font-neon uppercase tracking-tighter">
@@ -203,70 +203,84 @@
                 <h3 class="font-neon text-2xl text-white neon-text-red uppercase">Relatos de Mis Inicios</h3>
             </div>
             <div class="video-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Videos en carpeta inicio/ -->
                 <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio/inicio1.mp4" type="video/mp4"></video>
+                    <video controls preload="none"><source src="inicio 1.mp4" type="video/mp4"></video>
                     <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 1</div>
                 </div>
                 <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio/inicio2.mp4" type="video/mp4"></video>
+                    <video controls preload="none"><source src="inicio 2.mp4" type="video/mp4"></video>
                     <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 2</div>
                 </div>
                 <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio/inicio3.mp4" type="video/mp4"></video>
+                    <video controls preload="none"><source src="inicio 3.mp4" type="video/mp4"></video>
                     <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 3</div>
                 </div>
                 <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio/inicio4.mp4" type="video/mp4"></video>
+                    <video controls preload="none"><source src="inicio 4.mp4" type="video/mp4"></video>
                     <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 4</div>
                 </div>
                 <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio/inicio5.mp4" type="video/mp4"></video>
+                    <video controls preload="none"><source src="inicio 5.mp4" type="video/mp4"></video>
                     <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 5</div>
                 </div>
+                <!-- Nota: En tu imagen dice 'inico 7.mp4' con error de ortografía -->
                 <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio/inicio6.mp4" type="video/mp4"></video>
-                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 6</div>
+                    <video controls preload="none"><source src="inico 7.mp4" type="video/mp4"></video>
+                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 7</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL TURISMO -->
+    <!-- MODAL TURISMO (Nombres con espacios según imagen) -->
     <div id="turismoModal" class="modal-overlay p-4">
         <div class="relative w-full max-w-5xl">
             <button onclick="closeModal('turismoModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
             <div class="text-center mb-6"><h3 class="font-neon text-2xl text-white neon-text-red uppercase">Turismo en Vegueta</h3></div>
             <div class="video-container grid grid-cols-1 md:grid-cols-3 gap-6">
-                <video controls preload="none"><source src="turismo1.mp4" type="video/mp4"></video>
-                <video controls preload="none"><source src="turismo2.mp4" type="video/mp4"></video>
-                <video controls preload="none"><source src="turismo3.mp4" type="video/mp4"></video>
+                <!-- Tu imagen muestra turismo 2, 3 y 4 -->
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
+                    <video controls preload="none"><source src="turismo 2.mp4" type="video/mp4"></video>
+                </div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
+                    <video controls preload="none"><source src="turismo 3.mp4" type="video/mp4"></video>
+                </div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
+                    <video controls preload="none"><source src="turismo 4.mp4" type="video/mp4"></video>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DEPORTE -->
+    <!-- MODAL DEPORTE (Nombres con espacios según imagen) -->
     <div id="deporteModal" class="modal-overlay p-4">
         <div class="relative w-full max-w-5xl">
             <button onclick="closeModal('deporteModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
             <div class="text-center mb-6"><h3 class="font-neon text-2xl text-white neon-text-red uppercase">Deportes en Vegueta</h3></div>
             <div class="video-container grid grid-cols-1 md:grid-cols-3 gap-6">
-                <video controls preload="none"><source src="deporte1.mp4" type="video/mp4"></video>
-                <video controls preload="none"><source src="deporte2.mp4" type="video/mp4"></video>
-                <video controls preload="none"><source src="deporte3.mp4" type="video/mp4"></video>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
+                    <video controls preload="none"><source src="deporte 1.mp4" type="video/mp4"></video>
+                </div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
+                    <video controls preload="none"><source src="deporte 2.mp4" type="video/mp4"></video>
+                </div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
+                    <video controls preload="none"><source src="deporte 3.mp4" type="video/mp4"></video>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL EDUCACIÓN -->
+    <!-- MODAL EDUCACIÓN (Nombre corregido según imagen) -->
     <div id="educacionModal" class="modal-overlay p-4">
         <div class="relative w-full max-w-5xl">
             <button onclick="closeModal('educacionModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
             <div class="text-center mb-6"><h3 class="font-neon text-2xl text-white neon-text-red uppercase">Educación en Vegueta</h3></div>
-            <div class="video-container grid grid-cols-1 md:grid-cols-3 gap-6">
-                <video controls preload="none"><source src="educacion/educacion1.mp4" type="video/mp4"></video>
-                <video controls preload="none"><source src="educacion/educacion2.mp4" type="video/mp4"></video>
-                <video controls preload="none"><source src="educacion/educacion3.mp4" type="video/mp4"></video>
+            <div class="video-container flex justify-center">
+                <!-- En tu imagen solo se ve educacion 2.mp4 -->
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2 max-w-md w-full">
+                    <video controls preload="none"><source src="educacion 2.mp4" type="video/mp4"></video>
+                </div>
             </div>
         </div>
     </div>
@@ -322,7 +336,7 @@
         function openModal(id) {
             const modal = document.getElementById(id);
             if (modal) {
-                modal.classList.add('active'); // Usamos clases para mostrar
+                modal.classList.add('active'); 
                 document.body.style.overflow = 'hidden'; 
             }
         }
@@ -330,15 +344,15 @@
         function closeModal(id) {
             const modal = document.getElementById(id);
             if (modal) {
-                modal.classList.remove('active'); // Usamos clases para ocultar
+                modal.classList.remove('active'); 
                 document.body.style.overflow = 'auto'; 
                 const videos = modal.querySelectorAll('video');
                 videos.forEach(v => v.pause());
             }
         }
 
-        // Asegurar que al cargar la página todos los modales estén cerrados
-        window.addEventListener('DOMContentLoaded', (event) => {
+        // Asegura que todo inicie cerrado al abrir la página
+        window.addEventListener('DOMContentLoaded', () => {
             const modals = document.querySelectorAll('.modal-overlay');
             modals.forEach(m => m.classList.remove('active'));
         });
