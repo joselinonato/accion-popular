@@ -17,7 +17,6 @@
         }
 
         body {
-            /* Imagen de fondo principal - fondo1.jpg está en la raíz */
             background: 
                 linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                 url('fondo1.jpg');
@@ -93,7 +92,7 @@
             border: 1px solid rgba(255, 0, 0, 0.3);
         }
 
-        /* Los modales están ocultos por defecto con display: none */
+        /* Estilo base para todos los modales */
         .modal-overlay {
             display: none !important; 
             position: fixed;
@@ -105,19 +104,29 @@
             justify-content: center;
         }
 
-        /* Esta clase se activa solo al hacer clic */
         .modal-overlay.active {
             display: flex !important;
         }
 
         .video-container {
             max-height: 85vh;
-            width: 90%;
+            width: 95%;
             max-width: 1200px;
             overflow-y: auto;
-            padding: 20px;
+            padding: 10px;
             scrollbar-width: thin;
             scrollbar-color: var(--neon-red) transparent;
+        }
+
+        /* Estilo para el visor de video grande (Modo Cine) */
+        #largeVideoViewer {
+            z-index: 10000;
+        }
+
+        .large-video-box {
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
         }
 
         @keyframes pulse {
@@ -133,209 +142,233 @@
             width: 100%;
             border-radius: 12px;
             background: #000;
-            border: 1px solid rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .video-thumbnail {
+            cursor: pointer;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .video-thumbnail:hover {
+            transform: scale(1.02);
+            border-color: var(--neon-red);
         }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
-    <!-- Navegación -->
-    <nav class="fixed w-full z-[100] bg-black/90 backdrop-blur-md border-b border-red-900/30">
+    <!-- Navegación Responsiva -->
+    <nav class="fixed w-full z-[100] bg-black/95 backdrop-blur-md border-b border-red-900/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0">
-                    <span class="font-neon text-2xl font-bold text-white neon-text-red">JOSE LI</span>
+                    <span class="font-neon text-xl sm:text-2xl font-bold text-white neon-text-red">JOSE LI</span>
                 </div>
-                <div class="flex items-center space-x-4 md:space-x-8">
-                    <button onclick="openModal('videoModal')" class="font-neon text-red-500 hover:text-white px-4 py-2 transition-colors border border-red-600/30 rounded-lg hover:bg-red-600/20 text-sm tracking-widest">
+                <div class="flex items-center space-x-3 sm:space-x-6">
+                    <button onclick="openModal('videoModal')" class="font-neon text-red-500 hover:text-white px-3 py-2 border border-red-600/30 rounded-lg hover:bg-red-600/20 text-xs sm:text-sm tracking-widest transition-all">
                         INICIO
                     </button>
-                    <div class="hidden md:flex space-x-8">
-                        <a href="#proyectos" class="text-gray-300 hover:text-white px-3 py-2 transition-colors">Secciones</a>
-                    </div>
+                    <a href="#proyectos" class="text-gray-300 hover:text-white text-xs sm:text-sm uppercase tracking-tighter sm:tracking-normal transition-colors">Secciones</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Sección Hero -->
-    <section id="inicio-hero" class="relative min-h-screen flex items-center justify-center pt-16">
-        <div class="text-center z-10 px-4">
-            <h1 class="font-neon text-6xl md:text-9xl font-black mb-4 animate-neon-pulse">
+    <section id="inicio-hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-12">
+        <div class="text-center z-10 px-6">
+            <h1 class="font-neon text-5xl md:text-9xl font-black mb-6 animate-neon-pulse leading-none">
                 <span class="text-white">JOSE</span> 
+                <br class="sm:hidden">
                 <span class="text-red-600 neon-text-red">LI</span>
             </h1>
-            <p class="text-white text-lg md:text-2xl max-w-3xl mx-auto mb-8 font-light tracking-widest uppercase bg-black/40 backdrop-blur-sm inline-block px-6 py-2 rounded-full border border-red-600/30">
+            <p class="text-white text-sm md:text-2xl max-w-3xl mx-auto mb-10 font-light tracking-widest uppercase bg-black/40 backdrop-blur-sm inline-block px-4 py-3 rounded-xl border border-red-600/20">
                 Turismo • Deporte • Educación
             </p>
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            
+            <div class="flex flex-wrap gap-4 justify-center items-center">
                 <!-- Facebook -->
-                <a href="https://www.facebook.com/Joseli.AlcaldeDeVegueta" target="_blank" class="facebook-button p-4 rounded-full flex items-center justify-center bg-black/40 transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
-                    </svg>
+                <a href="https://www.facebook.com/Joseli.AlcaldeDeVegueta" target="_blank" class="facebook-button p-4 rounded-full flex items-center justify-center bg-black/60 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
                 </a>
                 
-                <a href="#proyectos" class="neon-button font-neon px-12 py-4 rounded-full uppercase tracking-widest text-sm bg-black/40">
+                <a href="#proyectos" class="neon-button font-neon px-10 py-4 rounded-full uppercase tracking-widest text-xs sm:text-sm bg-black/60">
                     Explorar Áreas
                 </a>
 
                 <!-- TikTok -->
-                <a href="https://www.tiktok.com/@joseli_oficial?_t=8qleHRuA2Fl&_r=1" target="_blank" class="tiktok-button p-4 rounded-full flex items-center justify-center transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 448 512" fill="currentColor">
-                        <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
-                    </svg>
+                <a href="https://www.tiktok.com/@joseli_oficial?_t=8qleHRuA2Fl&_r=1" target="_blank" class="tiktok-button p-4 rounded-full flex items-center justify-center transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 448 512" fill="currentColor"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- MODAL INICIO (Nombres corregidos con espacios según GitHub) -->
-    <div id="videoModal" class="modal-overlay p-4">
-        <div class="relative w-full max-w-6xl">
-            <button onclick="closeModal('videoModal')" class="absolute -top-12 right-0 text-white hover:text-red-600 flex items-center gap-2 font-neon uppercase tracking-tighter">
-                Cerrar 
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+    <!-- VISOR DE VIDEO GRANDE (MODO CINE) -->
+    <div id="largeVideoViewer" class="modal-overlay p-4">
+        <div class="large-video-box">
+            <button onclick="closeLargeVideo()" class="absolute -top-14 right-0 text-white hover:text-red-500 font-neon text-lg flex items-center gap-2 transition-colors">
+                CERRAR <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            <div class="text-center mb-6">
-                <h3 class="font-neon text-2xl text-white neon-text-red uppercase">Relatos de Mis Inicios</h3>
+            <video id="mainLargePlayer" controls class="shadow-2xl shadow-red-600/20 neon-border-red"></video>
+        </div>
+    </div>
+
+    <!-- MODALES DE CATEGORÍAS -->
+    
+    <!-- INICIO -->
+    <div id="videoModal" class="modal-overlay p-4">
+        <div class="video-container">
+            <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
+                <h3 class="font-neon text-xl sm:text-2xl text-white neon-text-red uppercase">Relatos de Mis Inicios</h3>
+                <button onclick="closeModal('videoModal')" class="text-white hover:text-red-600 uppercase font-neon text-xs tracking-widest">Volver</button>
             </div>
-            <div class="video-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio 1.mp4" type="video/mp4"></video>
-                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 1</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('inicio 1.mp4')">
+                    <video preload="metadata" muted><source src="inicio 1.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 1 - AMPLIAR</p>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio 2.mp4" type="video/mp4"></video>
-                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 2</div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('inicio 2.mp4')">
+                    <video preload="metadata" muted><source src="inicio 2.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 2 - AMPLIAR</p>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio 3.mp4" type="video/mp4"></video>
-                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 3</div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('inicio 3.mp4')">
+                    <video preload="metadata" muted><source src="inicio 3.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 3 - AMPLIAR</p>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio 4.mp4" type="video/mp4"></video>
-                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 4</div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('inicio 4.mp4')">
+                    <video preload="metadata" muted><source src="inicio 4.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 4 - AMPLIAR</p>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inicio 5.mp4" type="video/mp4"></video>
-                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 5</div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('inicio 5.mp4')">
+                    <video preload="metadata" muted><source src="inicio 5.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 5 - AMPLIAR</p>
                 </div>
-                <!-- Nota: En tu imagen dice 'inico 7.mp4' con error de ortografía -->
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="inico 7.mp4" type="video/mp4"></video>
-                    <div class="p-2 text-center text-red-500 font-neon text-xs">INICIO 7</div>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('inico 7.mp4')">
+                    <video preload="metadata" muted><source src="inico 7.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 7 - AMPLIAR</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL TURISMO (Nombres con espacios según imagen) -->
+    <!-- TURISMO -->
     <div id="turismoModal" class="modal-overlay p-4">
-        <div class="relative w-full max-w-5xl">
-            <button onclick="closeModal('turismoModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
-            <div class="text-center mb-6"><h3 class="font-neon text-2xl text-white neon-text-red uppercase">Turismo en Vegueta</h3></div>
-            <div class="video-container grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Tu imagen muestra turismo 2, 3 y 4 -->
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="turismo 2.mp4" type="video/mp4"></video>
+        <div class="video-container">
+            <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
+                <h3 class="font-neon text-xl sm:text-2xl text-white neon-text-red uppercase">Turismo en Vegueta</h3>
+                <button onclick="closeModal('turismoModal')" class="text-white hover:text-red-600 font-neon text-xs uppercase">Volver</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('turismo 2.mp4')">
+                    <video preload="metadata" muted><source src="turismo 2.mp4" type="video/mp4"></video>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="turismo 3.mp4" type="video/mp4"></video>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('turismo 3.mp4')">
+                    <video preload="metadata" muted><source src="turismo 3.mp4" type="video/mp4"></video>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="turismo 4.mp4" type="video/mp4"></video>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('turismo 4.mp4')">
+                    <video preload="metadata" muted><source src="turismo 4.mp4" type="video/mp4"></video>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DEPORTE (Nombres con espacios según imagen) -->
+    <!-- DEPORTE -->
     <div id="deporteModal" class="modal-overlay p-4">
-        <div class="relative w-full max-w-5xl">
-            <button onclick="closeModal('deporteModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
-            <div class="text-center mb-6"><h3 class="font-neon text-2xl text-white neon-text-red uppercase">Deportes en Vegueta</h3></div>
-            <div class="video-container grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="deporte 1.mp4" type="video/mp4"></video>
+        <div class="video-container">
+            <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
+                <h3 class="font-neon text-xl sm:text-2xl text-white neon-text-red uppercase">Deporte en Vegueta</h3>
+                <button onclick="closeModal('deporteModal')" class="text-white hover:text-red-600 font-neon text-xs uppercase">Volver</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('deporte 1.mp4')">
+                    <video preload="metadata" muted><source src="deporte 1.mp4" type="video/mp4"></video>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="deporte 2.mp4" type="video/mp4"></video>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('deporte 2.mp4')">
+                    <video preload="metadata" muted><source src="deporte 2.mp4" type="video/mp4"></video>
                 </div>
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2">
-                    <video controls preload="none"><source src="deporte 3.mp4" type="video/mp4"></video>
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail" onclick="openLargeVideo('deporte 3.mp4')">
+                    <video preload="metadata" muted><source src="deporte 3.mp4" type="video/mp4"></video>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL EDUCACIÓN (Nombre corregido según imagen) -->
+    <!-- EDUCACIÓN -->
     <div id="educacionModal" class="modal-overlay p-4">
-        <div class="relative w-full max-w-5xl">
-            <button onclick="closeModal('educacionModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
-            <div class="text-center mb-6"><h3 class="font-neon text-2xl text-white neon-text-red uppercase">Educación en Vegueta</h3></div>
-            <div class="video-container flex justify-center">
-                <!-- En tu imagen solo se ve educacion 2.mp4 -->
-                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-red-600/30 p-2 max-w-md w-full">
-                    <video controls preload="none"><source src="educacion 2.mp4" type="video/mp4"></video>
+        <div class="video-container">
+            <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
+                <h3 class="font-neon text-xl sm:text-2xl text-white neon-text-red uppercase">Educación en Vegueta</h3>
+                <button onclick="closeModal('educacionModal')" class="text-white hover:text-red-600 font-neon text-xs uppercase">Volver</button>
+            </div>
+            <div class="flex justify-center">
+                <div class="bg-zinc-900/80 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail max-w-md w-full" onclick="openLargeVideo('educacion 2.mp4')">
+                    <video preload="metadata" muted><source src="educacion 2.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">EDUCACIÓN 2 - AMPLIAR</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Sección Áreas de Enfoque -->
-    <section id="proyectos" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="font-neon text-4xl font-bold text-center mb-16">
+    <!-- Áreas de Enfoque -->
+    <section id="proyectos" class="py-24 relative px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="font-neon text-3xl sm:text-4xl font-bold text-center mb-16">
                 <span class="border-b-4 border-red-600 pb-2">MIS ÁREAS</span>
             </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Turismo -->
-                <div onclick="openModal('turismoModal')" class="card-glass p-8 rounded-2xl transition-all group hover:-translate-y-2 relative overflow-hidden cursor-pointer">
-                    <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg bg-red-600/20 text-red-500 neon-border-red">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div onclick="openModal('turismoModal')" class="card-glass p-8 rounded-3xl transition-all group hover:-translate-y-2 cursor-pointer">
+                    <div class="w-14 h-14 mb-6 flex items-center justify-center rounded-2xl bg-red-600/20 text-red-500 neon-border-red">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
-                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors">Turismo</h3>
-                    <p class="text-gray-300 text-sm mb-6">Promoviendo experiencias únicas. Haz clic para ver los videos.</p>
+                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors uppercase">Turismo</h3>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">Promoviendo experiencias únicas. Haz clic para ver los videos.</p>
+                    <div class="text-red-500 font-neon text-[10px] tracking-widest animate-pulse">VER VIDEOS</div>
                 </div>
 
-                <!-- Deporte -->
-                <div onclick="openModal('deporteModal')" class="card-glass p-8 rounded-2xl transition-all group hover:-translate-y-2 relative overflow-hidden cursor-pointer">
-                    <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg bg-red-600/20 text-red-500 neon-border-red">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                <div onclick="openModal('deporteModal')" class="card-glass p-8 rounded-3xl transition-all group hover:-translate-y-2 cursor-pointer">
+                    <div class="w-14 h-14 mb-6 flex items-center justify-center rounded-2xl bg-red-600/20 text-red-500 neon-border-red">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     </div>
-                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors">Deporte</h3>
-                    <p class="text-gray-300 text-sm mb-6">Fomentando la vida activa. Haz clic para ver los videos.</p>
+                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors uppercase">Deporte</h3>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">Fomentando la vida activa. Haz clic para ver los videos.</p>
+                    <div class="text-red-500 font-neon text-[10px] tracking-widest animate-pulse">VER VIDEOS</div>
                 </div>
 
-                <!-- Educación -->
-                <div onclick="openModal('educacionModal')" class="card-glass p-8 rounded-2xl transition-all group hover:-translate-y-2 relative overflow-hidden cursor-pointer">
-                    <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg bg-red-600/20 text-red-500 neon-border-red">
+                <div onclick="openModal('educacionModal')" class="card-glass p-8 rounded-3xl transition-all group hover:-translate-y-2 cursor-pointer">
+                    <div class="w-14 h-14 mb-6 flex items-center justify-center rounded-2xl bg-red-600/20 text-red-500 neon-border-red">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
                     </div>
-                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors">Educación</h3>
-                    <p class="text-gray-300 text-sm mb-6">Transformando el aprendizaje. Haz clic para ver los videos.</p>
+                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors uppercase">Educación</h3>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">Transformando el aprendizaje. Haz clic para ver los videos.</p>
+                    <div class="text-red-500 font-neon text-[10px] tracking-widest animate-pulse">VER VIDEOS</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-12 border-t border-red-900/20 bg-black">
+    <footer class="py-12 border-t border-red-900/20 bg-black/80 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="font-neon text-sm text-gray-500 uppercase">
-                &copy; 2027 <span class="text-red-600">JOSE LI</span>. TURISMO • DEPORTE • EDUCACIÓN.
+            <p class="font-neon text-xs sm:text-sm text-gray-500 uppercase tracking-widest">
+                &copy; 2027 <span class="text-red-600">JOSE LI</span>. <br class="sm:hidden"> TURISMO • DEPORTE • EDUCACIÓN.
             </p>
         </div>
     </footer>
 
     <script>
+        // Función principal para detener TODOS los videos en la página
+        function pauseAllVideos() {
+            const allVideos = document.querySelectorAll('video');
+            allVideos.forEach(video => {
+                video.pause();
+            });
+        }
+
         function openModal(id) {
             const modal = document.getElementById(id);
             if (modal) {
+                pauseAllVideos(); // Detener cualquier video antes de abrir sección
                 modal.classList.add('active'); 
                 document.body.style.overflow = 'hidden'; 
             }
@@ -347,14 +380,53 @@
                 modal.classList.remove('active'); 
                 document.body.style.overflow = 'auto'; 
                 const videos = modal.querySelectorAll('video');
-                videos.forEach(v => v.pause());
+                videos.forEach(v => {
+                    v.pause();
+                    v.currentTime = 0; // Reiniciar posición al cerrar sección
+                });
             }
         }
 
-        // Asegura que todo inicie cerrado al abrir la página
+        // VISOR GRANDE (MODO CINE)
+        function openLargeVideo(src) {
+            const viewer = document.getElementById('largeVideoViewer');
+            const player = document.getElementById('mainLargePlayer');
+            
+            // 1. Pausar cualquier video que se esté reproduciendo actualmente
+            pauseAllVideos();
+            
+            // 2. Limpiar y asignar nueva fuente
+            player.src = ""; // Limpieza previa
+            player.src = src;
+            
+            // 3. Mostrar visor y reproducir
+            viewer.classList.add('active');
+            player.play().catch(error => {
+                console.log("Auto-play prevenido por navegador, esperando interacción del usuario.");
+            });
+        }
+
+        function closeLargeVideo() {
+            const viewer = document.getElementById('largeVideoViewer');
+            const player = document.getElementById('mainLargePlayer');
+            
+            viewer.classList.remove('active');
+            player.pause();
+            player.src = ""; // Eliminar fuente para liberar memoria y detener descarga
+        }
+
+        // Escuchar tecla ESC para cerrar visor grande
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                closeLargeVideo();
+            }
+        });
+
+        // Asegurar estado inicial limpio
         window.addEventListener('DOMContentLoaded', () => {
             const modals = document.querySelectorAll('.modal-overlay');
             modals.forEach(m => m.classList.remove('active'));
+            pauseAllVideos();
         });
     </script>
 </body>
