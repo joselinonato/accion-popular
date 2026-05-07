@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jose Li | Neón Red & Black</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-red: #ff0000;
+            --neon-white: #ffffff;
+            --bg-black: #050505;
+            --facebook-blue: #1877F2;
+            --tiktok-cyan: #00f2ea;
+            --tiktok-red: #ff0050;
+        }
+
+        body {
+            /* Fondo principal utilizando la imagen subida */
+            background: 
+                linear-gradient(rgba(5, 5, 5, 0.75), rgba(5, 5, 5, 0.75)), 
+                url('fondo1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--neon-white);
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .font-neon {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .neon-text-red {
+            text-shadow: 0 0 5px var(--neon-red), 
+                         0 0 10px var(--neon-red), 
+                         0 0 20px var(--neon-red);
+        }
+
+        .neon-border-red {
+            box-shadow: 0 0 5px var(--neon-red), 
+                        inset 0 0 5px var(--neon-red);
+            border: 1px solid var(--neon-red);
+        }
+
+        .neon-button {
+            transition: all 0.3s ease;
+            border: 2px solid var(--neon-red);
+            color: var(--neon-red);
+            text-shadow: 0 0 5px var(--neon-red);
+        }
+
+        .neon-button:hover {
+            background-color: var(--neon-red);
+            color: white;
+            box-shadow: 0 0 20px var(--neon-red);
+            text-shadow: none;
+        }
+
+        .facebook-button {
+            transition: all 0.3s ease;
+            border: 2px solid var(--facebook-blue);
+            color: var(--facebook-blue);
+            filter: drop-shadow(0 0 5px var(--facebook-blue));
+        }
+
+        .facebook-button:hover {
+            background-color: var(--facebook-blue);
+            color: white;
+            box-shadow: 0 0 20px var(--facebook-blue);
+            filter: none;
+        }
+
+        .tiktok-button {
+            transition: all 0.3s ease;
+            background-color: #000;
+            border: 2px solid #fff;
+            color: #fff;
+            box-shadow: -3px -3px 0px var(--tiktok-cyan), 3px 3px 0px var(--tiktok-red);
+        }
+
+        .tiktok-button:hover {
+            box-shadow: -5px -5px 15px var(--tiktok-cyan), 5px 5px 15px var(--tiktok-red);
+            transform: scale(1.05);
+        }
+
+        .card-glass {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+
+        .header-bg {
+            /* Mantenemos el fondo 2 para el header si existe, si no, usa el general */
+            background: 
+                linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-black)),
+                url('fondo2.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .video-container {
+            max-height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neon-red) transparent;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .animate-neon-pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navegación -->
+    <nav class="fixed w-full z-50 bg-black/90 backdrop-blur-md border-b border-red-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <span class="font-neon text-2xl font-bold text-white neon-text-red">JOSE LI</span>
+                </div>
+                <div class="flex items-center space-x-4 md:space-x-8">
+                    <button onclick="openModal('videoModal')" class="font-neon text-red-500 hover:text-white px-3 py-2 transition-colors border border-red-600/30 rounded-lg hover:bg-red-600/20 text-sm">
+                        INICIO
+                    </button>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#proyectos" class="text-gray-300 hover:text-white px-3 py-2 transition-colors">Secciones</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero -->
+    <section id="inicio" class="header-bg relative min-h-[90vh] flex items-center justify-center pt-16">
+        <div class="text-center z-10 px-4">
+            <h1 class="font-neon text-6xl md:text-9xl font-black mb-4 animate-neon-pulse">
+                <span class="text-white">JOSE</span> 
+                <span class="text-red-600 neon-text-red">LI</span>
+            </h1>
+            <p class="text-white text-lg md:text-2xl max-w-3xl mx-auto mb-8 font-light tracking-widest uppercase bg-black/40 backdrop-blur-sm inline-block px-6 py-2 rounded-full border border-red-600/30">
+                Turismo • Deporte • Educación
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <!-- Enlace a Facebook -->
+                <a href="https://www.facebook.com/Joseli.AlcaldeDeVegueta" target="_blank" class="facebook-button p-4 rounded-full flex items-center justify-center bg-black/40 transition-all duration-300" title="Facebook de Jose Li">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                    </svg>
+                </a>
+                
+                <a href="#proyectos" class="neon-button font-neon px-12 py-4 rounded-full uppercase tracking-widest text-sm bg-black/40">
+                    Explorar Áreas
+                </a>
+
+                <!-- Enlace a TikTok -->
+                <a href="https://www.tiktok.com/@joseli_oficial?_t=8qleHRuA2Fl&_r=1" target="_blank" class="tiktok-button p-4 rounded-full flex items-center justify-center transition-all duration-300" title="TikTok de Jose Li">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 448 512" fill="currentColor">
+                        <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODALES DE VIDEO (Se mantienen las rutas indicadas anteriormente) -->
+    <div id="videoModal" class="modal-overlay flex items-center justify-center p-4">
+        <div class="relative w-full max-w-5xl">
+            <button onclick="closeModal('videoModal')" class="absolute -top-12 right-0 text-white hover:text-red-600 flex items-center gap-2 font-neon uppercase tracking-tighter">
+                Cerrar 
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="text-center mb-6">
+                <h3 class="font-neon text-2xl text-white neon-text-red uppercase">Relatos de Mis Inicios</h3>
+            </div>
+            <div class="video-container p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-zinc-900 rounded-xl overflow-hidden border border-red-600/30">
+                    <video class="w-full aspect-video bg-black" controls><source src="inicio/inicio1.mp4" type="video/mp4"></video>
+                    <div class="p-4"><h4 class="font-neon text-red-500 text-sm">PARTE 1</h4></div>
+                </div>
+                <div class="bg-zinc-900 rounded-xl overflow-hidden border border-red-600/30">
+                    <video class="w-full aspect-video bg-black" controls><source src="inicio/inicio2.mp4" type="video/mp4"></video>
+                    <div class="p-4"><h4 class="font-neon text-red-500 text-sm">PARTE 2</h4></div>
+                </div>
+                <div class="bg-zinc-900 rounded-xl overflow-hidden border border-red-600/30">
+                    <video class="w-full aspect-video bg-black" controls><source src="inicio/inicio3.mp4" type="video/mp4"></video>
+                    <div class="p-4"><h4 class="font-neon text-red-500 text-sm">PARTE 3</h4></div>
+                </div>
+                <div class="bg-zinc-900 rounded-xl overflow-hidden border border-red-600/30">
+                    <video class="w-full aspect-video bg-black" controls><source src="inicio/inicio4.mp4" type="video/mp4"></video>
+                    <div class="p-4"><h4 class="font-neon text-red-500 text-sm">PARTE 4</h4></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TURISMO -->
+    <div id="turismoModal" class="modal-overlay flex items-center justify-center p-4">
+        <div class="relative w-full max-w-5xl">
+            <button onclick="closeModal('turismoModal')" class="absolute -top-12 right-0 text-white hover:text-red-600 flex items-center gap-2 font-neon uppercase tracking-tighter">Cerrar</button>
+            <div class="text-center mb-6"><h3 class="font-neon text-2xl text-white neon-text-red uppercase">Turismo en Vegueta</h3></div>
+            <div class="video-container p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-zinc-900 rounded-xl overflow-hidden border border-red-600/30"><video class="w-full aspect-video bg-black" controls><source src="turismo1.mp4" type="video/mp4"></video></div>
+                <div class="bg-zinc-900 rounded-xl overflow-hidden border border-red-600/30"><video class="w-full aspect-video bg-black" controls><source src="turismo2.mp4" type="video/mp4"></video></div>
+                <div class="bg-zinc-900 rounded-xl overflow-hidden border border-red-600/30"><video class="w-full aspect-video bg-black" controls><source src="turismo3.mp4" type="video/mp4"></video></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Áreas de Enfoque -->
+    <section id="proyectos" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-neon text-4xl font-bold text-center mb-16">
+                <span class="border-b-4 border-red-600 pb-2">MIS ÁREAS</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tarjeta Turismo -->
+                <div onclick="openModal('turismoModal')" class="card-glass p-8 rounded-2xl transition-all group hover:-translate-y-2 relative overflow-hidden cursor-pointer">
+                    <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg bg-red-600/20 text-red-500 neon-border-red">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors">Turismo</h3>
+                    <p class="text-gray-300 text-sm mb-6">Promoviendo experiencias únicas. Haz clic para ver los videos.</p>
+                </div>
+
+                <!-- Tarjeta Deporte -->
+                <div onclick="openModal('deporteModal')" class="card-glass p-8 rounded-2xl transition-all group hover:-translate-y-2 relative overflow-hidden cursor-pointer">
+                    <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg bg-red-600/20 text-red-500 neon-border-red">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </div>
+                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors">Deporte</h3>
+                    <p class="text-gray-300 text-sm mb-6">Fomentando la vida activa. Haz clic para ver los videos.</p>
+                </div>
+
+                <!-- Tarjeta Educación -->
+                <div onclick="openModal('educacionModal')" class="card-glass p-8 rounded-2xl transition-all group hover:-translate-y-2 relative overflow-hidden cursor-pointer">
+                    <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg bg-red-600/20 text-red-500 neon-border-red">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                    </div>
+                    <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors">Educación</h3>
+                    <p class="text-gray-300 text-sm mb-6">Transformando el aprendizaje. Haz clic para ver los videos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-red-900/20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-neon text-sm text-gray-500 uppercase">
+                &copy; 2027 <span class="text-red-600">JOSE LI</span>. TURISMO • DEPORTE • EDUCACIÓN.
+            </p>
+        </div>
+    </footer>
+
+    <!-- MODAL DEPORTE & EDUCACIÓN (Faltaban por definir según la lógica previa) -->
+    <div id="deporteModal" class="modal-overlay flex items-center justify-center p-4">
+        <div class="relative w-full max-w-5xl">
+            <button onclick="closeModal('deporteModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
+            <div class="video-container p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <video class="w-full aspect-video bg-black" controls><source src="deporte1.mp4" type="video/mp4"></video>
+                <video class="w-full aspect-video bg-black" controls><source src="deporte2.mp4" type="video/mp4"></video>
+                <video class="w-full aspect-video bg-black" controls><source src="deporte3.mp4" type="video/mp4"></video>
+            </div>
+        </div>
+    </div>
+
+    <div id="educacionModal" class="modal-overlay flex items-center justify-center p-4">
+        <div class="relative w-full max-w-5xl">
+            <button onclick="closeModal('educacionModal')" class="absolute -top-12 right-0 text-white hover:text-red-600">Cerrar</button>
+            <div class="video-container p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <video class="w-full aspect-video bg-black" controls><source src="educacion/educacion1.mp4" type="video/mp4"></video>
+                <video class="w-full aspect-video bg-black" controls><source src="educacion/educacion2.mp4" type="video/mp4"></video>
+                <video class="w-full aspect-video bg-black" controls><source src="educacion/educacion3.mp4" type="video/mp4"></video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+            const videos = document.querySelectorAll('#' + id + ' video');
+            videos.forEach(v => v.pause());
+        }
+    </script>
+</body>
+</html>
