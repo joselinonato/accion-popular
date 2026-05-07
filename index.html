@@ -23,7 +23,7 @@
                 url('fondo1.jpg');
             background-size: cover;
             background-position: center center;
-            background-attachment: fixed; /* Efecto fijo para laptops */
+            background-attachment: fixed;
             background-repeat: no-repeat;
             color: var(--neon-white);
             font-family: 'Inter', sans-serif;
@@ -31,11 +31,10 @@
             min-height: 100vh;
         }
 
-        /* Ajustes específicos para Celulares y Tablets */
         @media (max-width: 1024px) {
             body {
-                background-attachment: scroll; /* Desactivar fixed en móviles para evitar saltos de imagen */
-                background-position: 45% center; /* Ajuste manual para centrar mejor al candidato en móvil */
+                background-attachment: scroll;
+                background-position: 45% center;
             }
         }
 
@@ -195,7 +194,7 @@
 </head>
 <body class="overflow-x-hidden">
 
-    <!-- Navegación Responsiva -->
+    <!-- Navegación -->
     <nav class="fixed w-full z-[100] bg-black/95 backdrop-blur-md border-b border-red-900/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
@@ -225,7 +224,6 @@
             </p>
             
             <div class="flex flex-wrap gap-4 justify-center items-center">
-                <!-- Redes y Botón -->
                 <a href="https://www.facebook.com/Joseli.AlcaldeDeVegueta" target="_blank" class="facebook-button p-4 rounded-full flex items-center justify-center bg-black/60 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
                 </a>
@@ -251,7 +249,9 @@
         </div>
     </div>
 
-    <!-- MODAL INICIO (Videos 1-7) -->
+    <!-- MODALES DE CATEGORÍAS (Actualizado según GitHub) -->
+    
+    <!-- INICIO -->
     <div id="videoModal" class="modal-overlay p-4">
         <div class="video-container">
             <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
@@ -259,7 +259,6 @@
                 <button onclick="closeModal('videoModal')" class="text-white hover:text-red-600 uppercase font-neon text-xs tracking-widest">Cerrar</button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Mapeo según nombres en GitHub -->
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('inicio 1.mp4')">
                     <video preload="metadata" muted><source src="inicio 1.mp4" type="video/mp4"></video>
                     <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 1</p>
@@ -280,6 +279,10 @@
                     <video preload="metadata" muted><source src="inicio 5.mp4" type="video/mp4"></video>
                     <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 5</p>
                 </div>
+                <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('inicio 6.mp4')">
+                    <video preload="metadata" muted><source src="inicio 6.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 6</p>
+                </div>
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('inico 7.mp4')">
                     <video preload="metadata" muted><source src="inico 7.mp4" type="video/mp4"></video>
                     <p class="p-3 text-center text-red-500 font-neon text-[10px]">INICIO 7</p>
@@ -288,7 +291,7 @@
         </div>
     </div>
 
-    <!-- MODAL TURISMO -->
+    <!-- TURISMO (Nuevos archivos) -->
     <div id="turismoModal" class="modal-overlay p-4">
         <div class="video-container">
             <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
@@ -296,20 +299,27 @@
                 <button onclick="closeModal('turismoModal')" class="text-white hover:text-red-600 font-neon text-xs uppercase">Cerrar</button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('turismo 1.mp4')">
+                    <video preload="metadata" muted><source src="turismo 1.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">TURISMO 1</p>
+                </div>
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('turismo 2.mp4')">
                     <video preload="metadata" muted><source src="turismo 2.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">TURISMO 2</p>
                 </div>
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('turismo 3.mp4')">
                     <video preload="metadata" muted><source src="turismo 3.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">TURISMO 3</p>
                 </div>
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('turismo 4.mp4')">
                     <video preload="metadata" muted><source src="turismo 4.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">TURISMO 4</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DEPORTE -->
+    <!-- DEPORTE -->
     <div id="deporteModal" class="modal-overlay p-4">
         <div class="video-container">
             <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
@@ -319,28 +329,39 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('deporte 1.mp4')">
                     <video preload="metadata" muted><source src="deporte 1.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">DEPORTE 1</p>
                 </div>
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('deporte 2.mp4')">
                     <video preload="metadata" muted><source src="deporte 2.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">DEPORTE 2</p>
                 </div>
                 <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('deporte 3.mp4')">
                     <video preload="metadata" muted><source src="deporte 3.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">DEPORTE 3</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL EDUCACIÓN -->
+    <!-- EDUCACIÓN (Actualizado con 1, 2 y 3) -->
     <div id="educacionModal" class="modal-overlay p-4">
         <div class="video-container">
             <div class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
                 <h3 class="font-neon text-xl text-white neon-text-red uppercase">Educación en Vegueta</h3>
                 <button onclick="closeModal('educacionModal')" class="text-white hover:text-red-600 font-neon text-xs uppercase">Cerrar</button>
             </div>
-            <div class="flex justify-center">
-                <div class="bg-zinc-900/90 rounded-xl overflow-hidden border border-white/10 p-2 video-thumbnail max-w-md w-full" onclick="openLargeVideo('educacion 2.mp4')">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('educacion 1.mp4')">
+                    <video preload="metadata" muted><source src="educacion 1.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">EDUCACIÓN 1</p>
+                </div>
+                <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('educacion 2.mp4')">
                     <video preload="metadata" muted><source src="educacion 2.mp4" type="video/mp4"></video>
-                    <p class="p-3 text-center text-red-500 font-neon text-xs uppercase">Ver Video</p>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">EDUCACIÓN 2</p>
+                </div>
+                <div class="bg-zinc-900/90 rounded-xl overflow-hidden p-2 video-thumbnail" onclick="openLargeVideo('educacion 3.mp4')">
+                    <video preload="metadata" muted><source src="educacion 3.mp4" type="video/mp4"></video>
+                    <p class="p-3 text-center text-red-500 font-neon text-[10px]">EDUCACIÓN 3</p>
                 </div>
             </div>
         </div>
@@ -379,7 +400,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
                     </div>
                     <h3 class="font-neon text-xl font-bold mb-4 group-hover:text-red-500 transition-colors uppercase">Educación</h3>
-                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">Transformando el aprendizaje. Haz clic para ver los videos.</p>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">Transformando el aprendizaje con innovación. Haz clic para ver los videos.</p>
                     <div class="text-red-500 font-neon text-[10px] tracking-widest animate-pulse">VER VIDEOS</div>
                 </div>
             </div>
