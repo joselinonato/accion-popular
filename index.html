@@ -612,6 +612,16 @@
         </div>
     </div>
 
+    <!-- Footer Premium -->
+    <footer class="py-16 border-t border-red-950/50 bg-black/90 relative z-10 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-neon text-xs sm:text-sm text-gray-400 uppercase tracking-widest leading-loose">
+                &copy; 2026 <span class="text-red-600 neon-text-red">JOSE L I</span>. TODOS LOS DERECHOS RESERVADOS. <br class="sm:hidden"> 
+                <span class="text-gray-500 font-medium">VIDA DE JOSÉ • TURISMO • DEPORTE • EDUCACIÓN.</span>
+            </p>
+        </div>
+    </footer>
+
     <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -1015,8 +1025,9 @@
             const gridContainer = document.getElementById('mediaWallGrid');
             if (!gridContainer) return;
 
-            // Combinamos los subidos de Firestore con los por defecto
-            let mergedList = [...window.customMediaItems];
+            // Combinamos los subidos de Firestore con los subidos locales y los por defecto
+            const localItems = window.getLocalMediaItems();
+            let mergedList = [...window.customMediaItems, ...localItems];
             
             if (!hideDemoItems) {
                 mergedList = [...mergedList, ...defaultMediaItems];
@@ -1080,7 +1091,6 @@
                             </div>
                         `;
                     } else {
-                        // Pasamos de forma segura usando atributos de datos para evitar romper las cadenas
                         adminDeleteBtnHtml = `
                             <div class="absolute top-4 right-4 z-40 flex items-center gap-2">
                                 <!-- Botón para Editar (✏️ Lápiz) -->
@@ -1264,6 +1274,56 @@
             renderMediaWall();
         }
 
+        // Auxiliares de LocalStorage para respaldo offline continuo
+        window.getLocalMediaItems = function() {
+            try {
+                const items = localStorage.getItem('jose_li_local_media');
+                return items ? JSON.parse(items) : [];
+            } catch(e) {
+                return [];
+            }
+        };
+
+        window.saveLocalMediaItem = function(newItem) {
+            try {
+                const items = window.getLocalMediaItems();
+                items.unshift(newItem);
+                localStorage.setItem('jose_li_local_media', JSON.stringify(items));
+                return true;
+            } catch(e) {
+                return false;
+            }
+        };
+
+        window.updateLocalMediaItem = function(id, type, category, title, url) {
+            try {
+                const items = window.getLocalMediaItems();
+                const index = items.findIndex(item => item.id === id);
+                if (index !== -1) {
+                    items[index].type = type;
+                    items[index].category = category;
+                    items[index].title = title.trim().toUpperCase();
+                    items[index].url = cleanAndConvertUrl(url, type);
+                    localStorage.setItem('jose_li_local_media', JSON.stringify(items));
+                    return true;
+                }
+                return false;
+            } catch(e) {
+                return false;
+            }
+        };
+
+        window.deleteLocalMediaItem = function(id) {
+            try {
+                const items = window.getLocalMediaItems();
+                const filtered = items.filter(item => item.id !== id);
+                localStorage.setItem('jose_li_local_media', JSON.stringify(filtered));
+                return true;
+            } catch(e) {
+                return false;
+            }
+        };
+
         // Crear una solicitud de borrado
         let pendingDeleteId = null;
         window.requestDeleteMedia = function(event, id) {
@@ -1271,7 +1331,9 @@
             pendingDeleteId = id;
             
             // Buscar el elemento en nuestra lista en memoria para obtener su título real
-            const foundItem = window.customMediaItems.find(i => i.id === id);
+            const localItems = window.getLocalMediaItems();
+            const mergedList = [...window.customMediaItems, ...localItems];
+            const foundItem = mergedList.find(i => i.id === id);
             const titleText = foundItem ? foundItem.title : "este archivo";
 
             document.getElementById('deleteFileName').textContent = `"${titleText}"`;
@@ -1282,9 +1344,24 @@
         document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
             if (pendingDeleteId) {
                 closeModal('deleteConfirmModal');
-                if (window.deleteMediaFromDb) {
-                    await window.deleteMediaFromDb(pendingDeleteId);
+                
+                let deletedFromFirebase = false;
+                if (window.deleteMediaFromDb && !pendingDeleteId.startsWith('local_')) {
+                    try {
+                        await window.deleteMediaFromDb(pendingDeleteId);
+                        deletedFromFirebase = true;
+                    } catch(err) {
+                        console.warn("Fallo al eliminar de Firebase, intentando local.");
+                    }
                 }
+                
+                // Si es local o falló Firebase, limpiar de LocalStorage
+                if (!deletedFromFirebase || pendingDeleteId.startsWith('local_')) {
+                    window.deleteLocalMediaItem(pendingDeleteId);
+                    showToast("Archivo eliminado localmente.");
+                    renderMediaWall();
+                }
+                
                 pendingDeleteId = null;
             }
         });
@@ -1293,7 +1370,10 @@
         window.requestEditMedia = function(event, id) {
             event.stopPropagation(); // Detener propagación
             
-            const foundItem = window.customMediaItems.find(i => i.id === id);
+            const localItems = window.getLocalMediaItems();
+            const mergedList = [...window.customMediaItems, ...localItems];
+            const foundItem = mergedList.find(i => i.id === id);
+            
             if (!foundItem) {
                 showToast("No se pudo cargar el archivo para editar.");
                 return;
@@ -1320,12 +1400,23 @@
 
             if (!id || !title || !url) return;
 
-            if (window.updateMediaInDb) {
-                await window.updateMediaInDb(id, type, category, title, url);
-                closeModal('editMediaModal');
-            } else {
-                showToast("Sincronización no disponible.");
+            let updatedInFirebase = false;
+            if (window.updateMediaInDb && !id.startsWith('local_')) {
+                try {
+                    await window.updateMediaInDb(id, type, category, title, url);
+                    updatedInFirebase = true;
+                } catch(err) {
+                    console.warn("Fallo al actualizar en Firebase, guardando cambios locales.");
+                }
             }
+
+            if (!updatedInFirebase || id.startsWith('local_')) {
+                window.updateLocalMediaItem(id, type, category, title, url);
+                showToast("Cambios guardados localmente.");
+                renderMediaWall();
+            }
+
+            closeModal('editMediaModal');
         }
 
         // Registrar nuevo archivo
@@ -1338,15 +1429,37 @@
 
             if (!title || !url) return;
 
+            const finalUrl = cleanAndConvertUrl(url, type);
+            const newItem = {
+                id: 'local_' + Date.now(),
+                type: type,
+                category: category,
+                title: title.trim().toUpperCase(),
+                url: finalUrl,
+                createdAt: Date.now()
+            };
+
+            let savedInFirebase = false;
             if (window.saveMediaToDb) {
-                await window.saveMediaToDb(type, category, title, url);
-                document.getElementById('mediaTitleInput').value = '';
-                document.getElementById('mediaUrlInput').value = '';
-                document.getElementById('urlWarningBox').classList.add('hidden');
-                closeModal('adminPanelModal'); // Cerrar panel tras publicar
-            } else {
-                showToast("Guardado sin conexión.");
+                try {
+                    await window.saveMediaToDb(type, category, title, url);
+                    savedInFirebase = true;
+                } catch(err) {
+                    console.warn("Firebase no activo o sin credenciales. Usando modo de respaldo local.");
+                }
             }
+
+            // Si Firebase no está configurado (como en GitHub Pages por defecto), guardamos en LocalStorage
+            if (!savedInFirebase) {
+                window.saveLocalMediaItem(newItem);
+                showToast("¡Publicado con éxito (Guardado localmente)!");
+                renderMediaWall();
+            }
+
+            document.getElementById('mediaTitleInput').value = '';
+            document.getElementById('mediaUrlInput').value = '';
+            document.getElementById('urlWarningBox').classList.add('hidden');
+            closeModal('adminPanelModal'); // Cerrar panel tras publicar
         }
 
         // --- 6. TOAST MESSENGER (NOTIFICACIONES DE NEÓN) ---
