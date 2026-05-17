@@ -1038,12 +1038,14 @@
             const gridContainer = document.getElementById('mediaWallGrid');
             if (!gridContainer) return;
 
-            // Combinamos los subidos de Firestore con los subidos locales y los por defecto
+            // Combinamos los subidos de Firestore con los subidos locales y los por defecto (Filtrando los demos borrados)
             const localItems = window.getLocalMediaItems();
             let mergedList = [...window.customMediaItems, ...localItems];
             
             if (!hideDemoItems) {
-                mergedList = [...mergedList, ...defaultMediaItems];
+                const deletedDemos = JSON.parse(localStorage.getItem('jose_li_deleted_demos') || '[]');
+                const activeDemos = defaultMediaItems.filter(item => !deletedDemos.includes(item.id));
+                mergedList = [...mergedList, ...activeDemos];
             }
 
             // Filtro por categorías y formatos
@@ -1097,30 +1099,24 @@
                 // Si es admin, mostrar botones flotantes de edición y eliminación directa en cada tarjeta
                 let adminDeleteBtnHtml = '';
                 if (isAdmin) {
-                    if (item.isDemo) {
-                        adminDeleteBtnHtml = `
-                            <div class="absolute top-4 right-4 z-30 bg-zinc-800/95 text-[8px] font-neon tracking-wider border border-white/10 text-gray-300 px-2.5 py-1.5 rounded-lg uppercase select-none shadow-md">
-                                Demo
-                            </div>
-                        `;
-                    } else {
-                        adminDeleteBtnHtml = `
-                            <div class="absolute top-4 right-4 z-40 flex items-center gap-2">
-                                <!-- Botón para Editar (✏️ Lápiz) -->
-                                <button onclick="requestEditMedia(event, '${item.id}')" class="bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-xl border border-blue-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Editar / Corregir título">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                </button>
-                                <!-- Botón para Eliminar (🗑️ Basura) -->
-                                <button onclick="requestDeleteMedia(event, '${item.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl border border-red-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Eliminar de forma permanente">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </div>
-                        `;
-                    }
+                    adminDeleteBtnHtml = `
+                        <div class="absolute top-4 right-4 z-40 flex items-center gap-2">
+                            <!-- Botón para Editar (✏️ Lápiz) - Solo si NO es un demo -->
+                            ${!item.isDemo ? `
+                            <button onclick="requestEditMedia(event, '${item.id}')" class="bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-xl border border-blue-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Editar / Corregir título">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </button>
+                            ` : ''}
+                            <!-- Botón para Eliminar (🗑️ Basura) - Ahora activo para todas las tarjetas, incluidas las Demos -->
+                            <button onclick="requestDeleteMedia(event, '${item.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl border border-red-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Eliminar de forma permanente">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
                 }
 
                 card.innerHTML = `
@@ -1132,6 +1128,7 @@
                         <div class="flex flex-wrap gap-1.5 mb-2">
                             <span class="text-[8px] bg-red-950/90 text-red-400 px-2.5 py-1 rounded uppercase font-neon tracking-widest border border-red-500/20 font-bold">${tagLabel}</span>
                             <span class="text-[8px] bg-black/80 text-gray-300 px-2.5 py-1 rounded uppercase font-neon tracking-widest border border-white/10 font-bold">${item.type === 'video' ? 'VIDEO 🎥' : 'FOTO 📷'}</span>
+                            ${item.isDemo ? `<span class="text-[8px] bg-zinc-800 text-gray-300 px-2 py-0.5 rounded uppercase font-neon font-bold tracking-widest">Demo</span>` : ''}
                         </div>
                         <h3 class="font-neon text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate max-w-full drop-shadow-md">${item.title}</h3>
                     </div>
@@ -1343,9 +1340,9 @@
             event.stopPropagation(); // Detener propagación
             pendingDeleteId = id;
             
-            // Buscar el elemento en nuestra lista en memoria para obtener su título real
+            // Buscar el elemento en nuestra lista combinada en memoria para obtener su título real
             const localItems = window.getLocalMediaItems();
-            const mergedList = [...window.customMediaItems, ...localItems];
+            const mergedList = [...window.customMediaItems, ...localItems, ...defaultMediaItems];
             const foundItem = mergedList.find(i => i.id === id);
             const titleText = foundItem ? foundItem.title : "este archivo";
 
@@ -1358,21 +1355,32 @@
             if (pendingDeleteId) {
                 closeModal('deleteConfirmModal');
                 
-                let deletedFromFirebase = false;
-                if (window.deleteMediaFromDb && !pendingDeleteId.startsWith('local_')) {
-                    try {
-                        await window.deleteMediaFromDb(pendingDeleteId);
-                        deletedFromFirebase = true;
-                    } catch(err) {
-                        console.warn("Fallo al eliminar de Firebase, intentando local.");
+                if (pendingDeleteId.startsWith('def')) {
+                    // Es un archivo de demostración por defecto, lo guardamos como eliminado localmente
+                    const deletedDemos = JSON.parse(localStorage.getItem('jose_li_deleted_demos') || '[]');
+                    if (!deletedDemos.includes(pendingDeleteId)) {
+                        deletedDemos.push(pendingDeleteId);
+                        localStorage.setItem('jose_li_deleted_demos', JSON.stringify(deletedDemos));
                     }
-                }
-                
-                // Si es local o falló Firebase, limpiar de LocalStorage
-                if (!deletedFromFirebase || pendingDeleteId.startsWith('local_')) {
-                    window.deleteLocalMediaItem(pendingDeleteId);
-                    showToast("Archivo eliminado localmente.");
+                    showToast("Archivo de demostración eliminado.");
                     renderMediaWall();
+                } else {
+                    let deletedFromFirebase = false;
+                    if (window.deleteMediaFromDb && !pendingDeleteId.startsWith('local_')) {
+                        try {
+                            await window.deleteMediaFromDb(pendingDeleteId);
+                            deletedFromFirebase = true;
+                        } catch(err) {
+                            console.warn("Fallo al eliminar de Firebase, intentando local.");
+                        }
+                    }
+                    
+                    // Si es local o falló Firebase, limpiar de LocalStorage
+                    if (!deletedFromFirebase || pendingDeleteId.startsWith('local_')) {
+                        window.deleteLocalMediaItem(pendingDeleteId);
+                        showToast("Archivo eliminado localmente.");
+                        renderMediaWall();
+                    }
                 }
                 
                 pendingDeleteId = null;
