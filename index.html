@@ -6,7 +6,7 @@
     <title>Jose L I | Muro de Medios Neón Premium</title>
     
     <!-- OPTIMIZACIONES DE VELOCIDAD DE CARGA EXTREMA -->
-    <link rel="preconnect" href="https://fon    ts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="image" href="fondo1.jpg">
     
@@ -269,6 +269,42 @@
             content-visibility: auto;
             contain-intrinsic-size: 800px;
         }
+
+        /* BARRA DE ESTADO DEL ADMINISTRADOR */
+        #adminStatusBar {
+            box-shadow: 0 4px 20px rgba(255, 0, 60, 0.4);
+            border-bottom: 2px solid var(--neon-red);
+        }
+
+        #toastContainer {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast-notification {
+            background: rgba(10, 10, 12, 0.9);
+            border: 1px solid var(--neon-red);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.3);
+            pointer-events: auto;
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
     </style>
 </head>
 <body class="overflow-x-hidden antialiased selection:bg-red-600 selection:text-white pb-24">
@@ -276,13 +312,36 @@
     <!-- CANVAS INTERACTIVO DE FONDO -->
     <canvas id="bg-canvas"></canvas>
 
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer"></div>
+
+    <!-- BARRA DE ESTADO DEL ADMINISTRADOR (SE ACTIVA AL INICIAR SESIÓN) -->
+    <div id="adminStatusBar" class="hidden fixed top-0 left-0 w-full bg-black/95 z-[999] px-4 py-3 flex justify-between items-center backdrop-blur-md transition-all">
+        <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
+            <span class="font-neon text-[10px] sm:text-xs tracking-widest text-white font-bold">🛠️ MODO ADMINISTRADOR ACTIVO</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="openModal('adminPanelModal')" class="bg-red-950/80 hover:bg-red-900 border border-red-500/30 text-[10px] font-neon px-3 py-1.5 rounded-lg text-red-400 font-bold transition-all uppercase tracking-wider">
+                Subir Archivo
+            </button>
+            <button onclick="exportCodeForGithub()" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-neon px-3 py-1.5 rounded-lg font-bold transition-all uppercase tracking-wider">
+                Exportar para GitHub
+            </button>
+            <button onclick="logoutAdmin()" class="bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] font-neon px-3 py-1.5 rounded-lg font-bold transition-all uppercase tracking-wider">
+                Salir
+            </button>
+        </div>
+    </div>
+
     <!-- Navegación Premium -->
     <nav class="fixed w-full z-[100] bg-black/85 backdrop-blur-xl border-b border-red-950/40 transition-all duration-300" id="mainNav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0 flex items-center space-x-2">
                     <div class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></div>
-                    <span class="font-neon text-lg sm:text-2xl font-black tracking-widest text-white neon-text-red uppercase select-none">JOSE L I</span>
+                    <!-- Clic secreto en JOSE L I para abrir inicio de sesión -->
+                    <span onclick="openAdminLogin()" class="font-neon text-lg sm:text-2xl font-black tracking-widest text-white neon-text-red uppercase cursor-pointer hover:scale-105 transition-transform select-none">JOSE L I</span>
                 </div>
                 <div class="flex items-center space-x-3 sm:space-x-6">
                     <a href="#galeria-seccion" class="font-neon text-red-500 hover:text-white px-4 py-2 border border-red-600/30 rounded-lg hover:bg-red-600/20 text-xs sm:text-sm tracking-widest transition-all">
@@ -304,7 +363,8 @@
             <h1 class="font-neon text-6xl md:text-[9.5rem] font-black mb-12 leading-none tracking-tighter">
                 <span class="text-white">JOSE</span> 
                 <br class="sm:hidden">
-                <span class="text-red-600 neon-text-red animate-neon-pulse tracking-widest pl-4 sm:pl-8">L I</span>
+                <!-- Clic secreto en L I para abrir administrador -->
+                <span onclick="openAdminLogin()" class="text-red-600 neon-text-red animate-neon-pulse cursor-pointer hover:opacity-80 transition-opacity select-none tracking-widest pl-4 sm:pl-8">L I</span>
             </h1>
             
             <div class="flex flex-wrap gap-5 justify-center items-center">
@@ -418,15 +478,116 @@
         </div>
     </section>
 
-    <!-- Footer Premium -->
-    <footer class="py-16 border-t border-red-950/50 bg-black/90 relative z-10 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="font-neon text-xs sm:text-sm text-gray-400 uppercase tracking-widest leading-loose">
-                &copy; 2026 <span class="text-red-600 neon-text-red">JOSE L I</span>. TODOS LOS DERECHOS RESERVADOS. <br class="sm:hidden"> 
-                <span class="text-gray-500 font-medium">VIDA DE JOSÉ • TURISMO • DEPORTE • EDUCACIÓN.</span>
-            </p>
+    <!-- MODAL DE CONTRASEÑA DE ADMINISTRADOR -->
+    <div id="adminPasswordModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'adminPasswordModal')">
+        <div class="card-glass p-8 rounded-3xl max-w-sm w-full border border-red-600/40 shadow-2xl relative">
+            <h3 class="font-neon text-xl text-white neon-text-red uppercase mb-6 text-center tracking-widest">Acceso Administrador</h3>
+            <div class="mb-6">
+                <label class="block text-gray-400 text-xs font-neon uppercase tracking-wider mb-2">Contraseña</label>
+                <input type="password" id="adminPasswordInput" class="w-full bg-black/60 border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 font-sans text-center tracking-widest" placeholder="••••••••">
+                <p id="passwordError" class="text-red-500 text-xs font-neon mt-2 text-center hidden">Contraseña incorrecta</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="closeModal('adminPasswordModal')" class="flex-1 border border-white/10 hover:border-white/30 text-gray-400 hover:text-white font-neon text-xs uppercase py-3 rounded-xl transition-all">Cancelar</button>
+                <button onclick="checkAdminPassword()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-neon text-xs uppercase py-3 rounded-xl transition-all font-bold">Ingresar</button>
+            </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN DE BORRADO -->
+    <div id="deleteConfirmModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'deleteConfirmModal')">
+        <div class="card-glass p-8 rounded-3xl max-w-sm w-full border border-red-600 shadow-2xl relative">
+            <div class="w-16 h-16 mx-auto bg-red-950/80 rounded-full flex items-center justify-center border border-red-600 shadow-[0_0_15px_rgba(255,0,60,0.5)] mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </div>
+            <h3 class="font-neon text-base text-white neon-text-red uppercase mb-2 text-center tracking-wider">¿Eliminar Archivo?</h3>
+            <p class="text-xs text-gray-300 text-center leading-relaxed mb-6 font-sans">
+                Esta acción borrará permanentemente el archivo <span id="deleteFileName" class="text-red-400 font-bold"></span> de tu lista de control local.
+            </p>
+            <div class="flex gap-4">
+                <button onclick="closeModal('deleteConfirmModal')" class="flex-1 border border-white/10 hover:border-white/20 text-gray-400 hover:text-white font-neon text-[10px] uppercase py-3 rounded-xl transition-all tracking-wider">Cancelar</button>
+                <button id="confirmDeleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-neon text-[10px] uppercase py-3 rounded-xl transition-all font-bold tracking-wider">Sí, Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL DE ADMINISTRADOR: SUBIR NUEVA IMAGEN O VIDEO -->
+    <div id="adminPanelModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'adminPanelModal')">
+        <div class="media-container max-w-3xl bg-black/95 rounded-3xl border border-red-600/40 p-8 shadow-2xl font-sans">
+            <div class="flex justify-between items-center mb-8 border-b border-red-600/20 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 rounded-full bg-red-600 animate-pulse"></div>
+                    <h3 class="font-neon text-lg sm:text-2xl text-white neon-text-red uppercase tracking-wider">Agregar Archivo Nuevo</h3>
+                </div>
+                <button onclick="closeModal('adminPanelModal')" class="text-gray-400 hover:text-red-500 font-neon text-xs tracking-widest uppercase border border-white/10 hover:border-red-500/30 px-4 py-2 rounded-lg transition-all">Cerrar</button>
+            </div>
+
+            <!-- EXPLICACIÓN CLARA DEL SISTEMA GITHUB + ARCHIVE -->
+            <div class="mb-6 p-4 bg-yellow-950/80 border border-yellow-500/40 rounded-2xl text-xs text-yellow-200 leading-relaxed">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse"></span>
+                    <strong class="font-neon uppercase text-[9px] tracking-wider text-white">Sincronizador Estático de GitHub Pages</strong>
+                </div>
+                Todo lo que agregues o borres aquí se guardará primero en este celular/computadora. Para que el cambio sea global y permanente para todos los visitantes (incluyendo incógnitos y otros móviles), usa el botón azul <strong class="text-white">"Exportar para GitHub"</strong> que se encuentra en la barra superior. Este generará el código que debes pegar en tu repositorio.
+            </div>
+
+            <!-- Formulario para agregar Videos o Fotos -->
+            <div class="bg-red-950/10 border border-red-600/20 rounded-2xl p-6">
+                <form id="addMediaForm" onsubmit="handleAddMedia(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Formato</label>
+                            <select id="mediaTypeSelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                                <option value="photo">📷 Foto (Imagen directa .jpg o .png)</option>
+                                <option value="video">🎥 Video (Video directo .mp4)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Categoría</label>
+                            <select id="mediaCategorySelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                                <option value="vida">👤 Vida de José</option>
+                                <option value="turismo">🌴 Turismo</option>
+                                <option value="deporte">⚽ Deporte</option>
+                                <option value="educacion">📚 Educación</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Título del Archivo</label>
+                            <input type="text" id="mediaTitleInput" required placeholder="Ej. PRONOEI LAS TRAVESURAS" class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Enlace Directo de Archive.org</label>
+                        <input type="url" id="mediaUrlInput" required placeholder="https://archive.org/download/..." class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-neon text-xs uppercase py-3 rounded-xl transition-all font-bold tracking-widest flex items-center justify-center gap-2">
+                        <span>Añadir al muro local</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EXPORTACIÓN DE CÓDIGO (EL PASO FINAL) -->
+    <div id="exportCodeModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'exportCodeModal')">
+        <div class="media-container max-w-2xl bg-black/95 rounded-3xl border border-blue-500/40 p-8 shadow-2xl font-sans">
+            <div class="flex justify-between items-center mb-6 border-b border-blue-600/20 pb-4">
+                <h3 class="font-neon text-lg sm:text-xl text-white neon-text-red uppercase tracking-wider">📋 Exportar Código para GitHub</h3>
+                <button onclick="closeModal('exportCodeModal')" class="text-gray-400 hover:text-red-500 font-neon text-xs tracking-widest uppercase">Cerrar</button>
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                Para que todos los visitantes (incluyendo incógnitos) vean tu galería actualizada, copia todo el código del cuadro de abajo, entra a tu repositorio de GitHub, edita tu archivo <strong class="text-white">index.html</strong>, borra todo lo que tiene, pega este código nuevo y guárdalo.
+            </p>
+            <div class="relative mb-6">
+                <textarea id="exportedCodeTextarea" readonly class="w-full h-64 bg-zinc-950 border border-blue-500/20 rounded-xl p-4 text-xs font-mono text-cyan-400 focus:outline-none focus:border-blue-500"></textarea>
+            </div>
+            <button onclick="copyExportedCode()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-neon text-xs uppercase py-3.5 rounded-xl transition-all font-bold tracking-widest">
+                Copiar Todo el Código de la Página
+            </button>
+        </div>
+    </div>
 
     <script>
         // =========================================================================================
@@ -459,6 +620,17 @@
 
         let selectedCategory = 'all';
         let selectedFormat = 'all';
+        let isAdmin = false;
+
+        // Recuperar ítems agregados localmente (para que la sesión local no los pierda en borrador)
+        function getLocalMediaItems() {
+            try {
+                const items = localStorage.getItem('jose_li_local_media');
+                return items ? JSON.parse(items) : [];
+            } catch(e) {
+                return [];
+            }
+        }
 
         // Convertidor inteligente para URLs de Archive.org y Drive
         function cleanAndConvertUrl(url, type) {
@@ -653,8 +825,12 @@
             const gridContainer = document.getElementById('mediaWallGrid');
             if (!gridContainer) return;
 
+            // Unimos los elementos estáticos y los temporales locales agregados
+            const localItems = getLocalMediaItems();
+            const mergedList = [...localItems, ...mediaItems];
+
             // Filtro por categorías y formatos
-            const filteredList = mediaItems.filter(item => {
+            const filteredList = mergedList.filter(item => {
                 const matchesCategory = (selectedCategory === 'all') || (item.category === selectedCategory);
                 const matchesFormat = (selectedFormat === 'all') || (item.type === selectedFormat);
                 return matchesCategory && matchesFormat;
@@ -671,7 +847,6 @@
                 const card = document.createElement('div');
                 card.className = 'media-card card-glass rounded-3xl overflow-hidden shadow-xl flex flex-col justify-end p-6 mb-6 break-inside-avoid relative';
                 
-                // Variar la altura de las tarjetas por defecto para crear un efecto dinámico masonry
                 const heightClass = index % 3 === 0 ? 'h-64' : (index % 3 === 1 ? 'h-80' : 'h-72');
                 card.classList.add(heightClass);
                 
@@ -688,10 +863,10 @@
                 card.style.backgroundSize = 'cover';
                 card.style.backgroundPosition = 'center';
 
-                // Definimos icono de reproducción o zoom
+                // Icono neón
                 const iconSvg = item.type === 'video' 
                     ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>`
-                    : `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>`;
+                    : `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542 7z" /></svg>`;
 
                 const categoryLabels = {
                     vida: 'VIDA DE JOSÉ',
@@ -701,7 +876,23 @@
                 };
                 const tagLabel = categoryLabels[item.category] || 'GENERAL';
 
+                // Panel de administración de tarjetas en vivo (si se inició sesión como Admin)
+                let adminDeleteBtnHtml = '';
+                if (isAdmin) {
+                    adminDeleteBtnHtml = `
+                        <div class="absolute top-4 right-4 z-40 flex items-center gap-2">
+                            <!-- Botón para Eliminar temporal/localmente de la lista actual -->
+                            <button onclick="requestDeleteMedia(event, '${item.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl border border-red-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Eliminar del borrador local">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
+                    ${adminDeleteBtnHtml}
                     <div class="media-icon-badge">
                         ${iconSvg}
                     </div>
@@ -720,6 +911,9 @@
 
         // Manejar el clic en la tarjeta de manera segura
         window.handleCardClick = function(event, type, url, title) {
+            if (event.target.closest('button')) {
+                return;
+            }
             openLargeViewer(type, url, title);
         }
 
@@ -738,6 +932,14 @@
         }
 
         // --- 4. CONTROLADORES DE MODALES Y VISUALIZADOR ---
+        window.openModal = function(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('active'); 
+                document.body.style.overflow = 'hidden'; 
+            }
+        }
+
         window.closeModal = function(id) {
             const modal = document.getElementById(id);
             if (modal) {
@@ -801,14 +1003,163 @@
             stopSimulation();
         }
 
-        // Atajos de teclado (Escape para cerrar visor)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
-                closeLargeViewer();
+        // --- 5. ADMINISTRADOR PRIVADO (CÓDIGO SEGURO SÓLO HTML) ---
+        window.openAdminLogin = function() {
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('passwordError').classList.add('hidden');
+            openModal('adminPasswordModal');
+        }
+
+        window.checkAdminPassword = function() {
+            const input = document.getElementById('adminPasswordInput').value.trim();
+            if (input.toLowerCase() === 'joseli') {
+                closeModal('adminPasswordModal');
+                
+                isAdmin = true;
+                sessionStorage.setItem('isAdminLi', 'true');
+                
+                applyAdminModeUI();
+                showToast("¡Modo Administrador Activo!");
+            } else {
+                const err = document.getElementById('passwordError');
+                err.classList.remove('hidden');
+                err.textContent = "Contraseña incorrecta. Intente de nuevo.";
+            }
+        }
+
+        window.applyAdminModeUI = function() {
+            if (isAdmin) {
+                document.getElementById('adminStatusBar').classList.remove('hidden');
+                document.getElementById('mainNav').classList.add('mt-12'); // Empujar Nav
+            } else {
+                document.getElementById('adminStatusBar').classList.add('hidden');
+                document.getElementById('mainNav').classList.remove('mt-12');
+            }
+            renderMediaWall();
+        }
+
+        window.logoutAdmin = function() {
+            isAdmin = false;
+            sessionStorage.removeItem('isAdminLi');
+            applyAdminModeUI();
+            showToast("Sesión cerrada.");
+        }
+
+        // Agregar nuevo archivo localmente al borrador actual
+        window.handleAddMedia = function(e) {
+            e.preventDefault();
+            const type = document.getElementById('mediaTypeSelect').value;
+            const category = document.getElementById('mediaCategorySelect').value;
+            const title = document.getElementById('mediaTitleInput').value.trim();
+            const url = document.getElementById('mediaUrlInput').value.trim();
+
+            if (!title || !url) return;
+
+            const finalUrl = cleanAndConvertUrl(url, type);
+            const newItem = {
+                id: 'local_' + Date.now(),
+                type: type,
+                category: category,
+                title: title.toUpperCase(),
+                url: finalUrl
+            };
+
+            const localItems = getLocalMediaItems();
+            localItems.unshift(newItem);
+            localStorage.setItem('jose_li_local_media', JSON.stringify(localItems));
+
+            document.getElementById('mediaTitleInput').value = '';
+            document.getElementById('mediaUrlInput').value = '';
+            
+            closeModal('adminPanelModal');
+            showToast("Añadido localmente. ¡No olvides exportar!");
+            renderMediaWall();
+        }
+
+        // Solicitar borrado de un elemento
+        let pendingDeleteId = null;
+        window.requestDeleteMedia = function(event, id) {
+            event.stopPropagation();
+            pendingDeleteId = id;
+
+            const localItems = getLocalMediaItems();
+            const mergedList = [...localItems, ...mediaItems];
+            const foundItem = mergedList.find(i => i.id === id);
+            const titleText = foundItem ? foundItem.title : "este archivo";
+
+            document.getElementById('deleteFileName').textContent = `"${titleText}"`;
+            openModal('deleteConfirmModal');
+        }
+
+        // Ejecutar borrado final
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            if (pendingDeleteId) {
+                closeModal('deleteConfirmModal');
+                
+                // Si el elemento es de la lista estática (mediaItems), lo guardamos temporalmente como excluido
+                if (!pendingDeleteId.startsWith('local_')) {
+                    // Eliminamos el elemento de la lista estática del código haciendo una copia modificada
+                    showToast("No se pueden eliminar elementos integrados en código de forma directa. Elimínalos del arreglo JS.");
+                } else {
+                    const localItems = getLocalMediaItems();
+                    const filtered = localItems.filter(item => item.id !== pendingDeleteId);
+                    localStorage.setItem('jose_li_local_media', JSON.stringify(filtered));
+                    showToast("Archivo eliminado localmente.");
+                }
+                
+                pendingDeleteId = null;
+                renderMediaWall();
             }
         });
 
-        // Inicio en la carga de página (Asíncrono / Carga pasiva del Canvas para velocidad extrema)
+        // 📋 EXPORTADOR DEL CÓDIGO ACTUALIZADO PARA GITHUB
+        window.exportCodeForGithub = function() {
+            // Obtenemos la lista combinada completa (estáticos + los nuevos que subió en esta sesión)
+            const localItems = getLocalMediaItems();
+            const fullCombinedList = [...localItems, ...mediaItems];
+
+            // Formatear el listado JS elegantemente como un string JSON limpio
+            const formattedArrayString = JSON.stringify(fullCombinedList, null, 12);
+
+            // Generar todo el código HTML de este archivo reemplazando el bloque del array
+            let entireHtml = document.documentElement.outerHTML;
+            
+            // Reemplazar la sección "const mediaItems = [...];" con los nuevos elementos actualizados
+            const arrayRegex = /const\s+mediaItems\s*=\s*\[[\s\S]*?\];/;
+            const replacementString = `const mediaItems = ${JSON.stringify(fullCombinedList, null, 8)};`;
+            
+            entireHtml = entireHtml.replace(arrayRegex, replacementString);
+            
+            // Envolver en la estructura DOCTYPE para que sea un archivo HTML perfecto
+            const completeHtmlOutput = `<!DOCTYPE html>\n<html lang="es">\n` + entireHtml + `\n</html>`;
+
+            document.getElementById('exportedCodeTextarea').value = completeHtmlOutput;
+            openModal('exportCodeModal');
+        }
+
+        window.copyExportedCode = function() {
+            const textarea = document.getElementById('exportedCodeTextarea');
+            textarea.select();
+            document.execCommand('copy');
+            showToast("¡Código copiado al portapapeles! Ahora pégalo en GitHub.");
+            closeModal('exportCodeModal');
+        };
+
+        // --- NOTIFICACIONES TOAST ---
+        window.showToast = function(message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Carga Inicial
         window.onload = function() {
             resizeBgCanvas();
             initBgParticles();
@@ -817,7 +1168,12 @@
                 animateBgParticles();
             }, 50);
 
-            renderMediaWall();
+            if (sessionStorage.getItem('isAdminLi') === 'true') {
+                isAdmin = true;
+                applyAdminModeUI();
+            } else {
+                renderMediaWall();
+            }
         };
     </script>
 </body>
