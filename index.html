@@ -458,7 +458,7 @@
                         </label>
                     </div>
 
-                    <!-- NUEVO FILTRO PARA ADMINISTRADORES: OCULTAR ELEMENTOS POR DEFECTO -->
+                    <!-- FILTRO PARA ADMINISTRADORES: OCULTAR ELEMENTOS POR DEFECTO -->
                     <div id="adminDemoFilter" class="hidden items-center border-l border-white/25 pl-4 ml-2">
                         <label class="flex items-center gap-2 cursor-pointer text-red-400 hover:text-red-300 font-neon text-[9px] uppercase tracking-wider">
                             <input type="checkbox" id="hideDemoItemsCheckbox" onchange="toggleDemoItems()" class="accent-red-600 rounded">
@@ -590,13 +590,19 @@
 
         // CONFIGURACIÓN DE FIREBASE (Rule 1 Strict Paths)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'jose-li-media-portfolio';
+        
+        /* * 📝 NOTA PARA DESPLIEGUE EN GITHUB PAGES:
+         * Si quieres conectar tu propia base de datos Firebase real para que guarde tus fotos y videos 
+         * en la nube permanentemente fuera de nuestro entorno de pruebas, reemplaza el objeto de abajo 
+         * por tus propias credenciales que te proporciona la consola de Firebase (https://console.firebase.google.com/):
+         */
         const firebaseConfig = typeof __firebase_config !== 'undefined' 
             ? JSON.parse(__firebase_config) 
             : {
-                apiKey: "",
-                authDomain: "mock-project.firebaseapp.com",
-                projectId: "mock-project",
-                storageBucket: "mock-project.appspot.com",
+                apiKey: "TU_API_KEY_AQUÍ",
+                authDomain: "TU-PROYECTO.firebaseapp.com",
+                projectId: "TU-PROYECTO-ID",
+                storageBucket: "TU-PROYECTO.appspot.com",
                 messagingSenderId: "123456789",
                 appId: "1:123456789:web:123"
             };
@@ -618,7 +624,7 @@
                     await signInAnonymously(auth);
                 }
             } catch (error) {
-                console.warn("Autenticación offline. Cargando modo demostración local:", error);
+                console.warn("Autenticación offline o credenciales por defecto. Cargando modo demostración local:", error);
                 renderMediaWall();
             }
         }
