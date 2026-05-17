@@ -624,21 +624,11 @@
         </div>
     </div>
 
-    <!-- Footer Premium -->
-    <footer class="py-16 border-t border-red-950/50 bg-black/90 relative z-10 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="font-neon text-xs sm:text-sm text-gray-400 uppercase tracking-widest leading-loose">
-                &copy; 2026 <span class="text-red-600 neon-text-red">JOSE L I</span>. TODOS LOS DERECHOS RESERVADOS. <br class="sm:hidden"> 
-                <span class="text-gray-500 font-medium">VIDA DE JOSÉ • TURISMO • DEPORTE • EDUCACIÓN.</span>
-            </p>
-        </div>
-    </footer>
-
     <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, addDoc, deleteDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, addDoc, deleteDoc, updateDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // CONFIGURACIÓN DE FIREBASE (Rule 1 Strict Paths)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'jose-li-media-portfolio';
@@ -704,6 +694,19 @@
             }, (error) => {
                 console.error("Firestore Error de sincronización:", error);
             });
+
+            // ESCUCHAR AJUSTES GLOBALES DE LAS DEMOS ELIMINADAS (Para sincronizar en Incógnito / Otros celulares)
+            const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'deleted_demos');
+            onSnapshot(settingsDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    window.globalDeletedDemos = docSnap.data().list || [];
+                } else {
+                    window.globalDeletedDemos = [];
+                }
+                renderMediaWall();
+            }, (error) => {
+                console.warn("Ajustes globales offline o no inicializados en Firebase. Usando local.");
+            });
         }
 
         // Guardado de nuevos medios
@@ -765,10 +768,29 @@
             }
         }
 
+        // Guardar la exclusión global de las demos borradas en Firestore (Sincronización multidispositivo)
+        window.saveGlobalDeletedDemosToDb = async function(deletedList) {
+            if (!userAuthenticated || !db) return;
+            try {
+                const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'deleted_demos');
+                await setDoc(settingsDocRef, { list: deletedList });
+            } catch(err) {
+                console.error("Error al sincronizar borrado global en Firestore:", err);
+            }
+        }
+
         authenticateUser();
     </script>
 
     <script>
+        // ---------------------------------------------------------
+        // ⚙️ AJUSTE GLOBAL DE CONTENIDO DE DEMOSTRACIÓN:
+        // Si no quieres que las fotos y videos de muestra aparezcan NUNCA 
+        // para ningún usuario (incluso incógnitos o nuevos celulares), 
+        // cambia el valor de abajo a 'false':
+        const MOSTRAR_DEMOS_POR_DEFECTO = true;
+        // ---------------------------------------------------------
+
         // ARCHIVOS POR DEFECTO OPTIMIZADOS (Categorizados estrictamente en Vida de José, Turismo, Deporte y Educación)
         // Reducidas resoluciones de muestra de Unsplash (w=500, q=60) para optimización extrema de carga
         const defaultMediaItems = [
@@ -787,6 +809,7 @@
         ];
 
         window.customMediaItems = []; // Se sincroniza desde Firestore en tiempo real
+        window.globalDeletedDemos = []; // Recibidos dinámicamente desde Firestore para sincronización global
         let selectedCategory = 'all';
         let selectedFormat = 'all';
         let isAdmin = false;
@@ -1042,9 +1065,13 @@
             const localItems = window.getLocalMediaItems();
             let mergedList = [...window.customMediaItems, ...localItems];
             
-            if (!hideDemoItems) {
-                const deletedDemos = JSON.parse(localStorage.getItem('jose_li_deleted_demos') || '[]');
-                const activeDemos = defaultMediaItems.filter(item => !deletedDemos.includes(item.id));
+            if (!hideDemoItems && MOSTRAR_DEMOS_POR_DEFECTO) {
+                // Combinar la exclusión local de localStorage con la sincronización global en Firestore
+                const localDeletedDemos = JSON.parse(localStorage.getItem('jose_li_deleted_demos') || '[]');
+                const globalDeletedDemos = window.globalDeletedDemos || [];
+                const allDeletedDemos = [...new Set([...localDeletedDemos, ...globalDeletedDemos])];
+
+                const activeDemos = defaultMediaItems.filter(item => !allDeletedDemos.includes(item.id));
                 mergedList = [...mergedList, ...activeDemos];
             }
 
@@ -1111,7 +1138,7 @@
                             ` : ''}
                             <!-- Botón para Eliminar (🗑️ Basura) - Ahora activo para todas las tarjetas, incluidas las Demos -->
                             <button onclick="requestDeleteMedia(event, '${item.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl border border-red-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Eliminar de forma permanente">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
                             </button>
@@ -1277,7 +1304,7 @@
             showToast("Sesión cerrada.");
         }
 
-        // Alternar visualización de demostración
+        // Alternar visualización de demaostración
         window.toggleDemoItems = function() {
             const checkbox = document.getElementById('hideDemoItemsCheckbox');
             hideDemoItems = checkbox.checked;
@@ -1362,6 +1389,15 @@
                         deletedDemos.push(pendingDeleteId);
                         localStorage.setItem('jose_li_deleted_demos', JSON.stringify(deletedDemos));
                     }
+                    
+                    // Sincronizar el borrado del demo globalmente en la base de datos de Firestore
+                    if (window.globalDeletedDemos && !window.globalDeletedDemos.includes(pendingDeleteId)) {
+                        window.globalDeletedDemos.push(pendingDeleteId);
+                        if (window.saveGlobalDeletedDemosToDb) {
+                            await window.saveGlobalDeletedDemosToDb(window.globalDeletedDemos);
+                        }
+                    }
+
                     showToast("Archivo de demostración eliminado.");
                     renderMediaWall();
                 } else {
