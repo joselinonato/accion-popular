@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jose L I | Muro de Medios Neón Premium</title>
     
-    <!-- OPTIMIZACIONES DE VELOCIDAD DE CARGA: PRECONEXIONES Y PRECARGAS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- OPTIMIZACIONES DE VELOCIDAD DE CARGA EXTREMA -->
+    <link rel="preconnect" href="https://fon    ts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="image" href="fondo1.jpg">
     
@@ -251,36 +251,6 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        #toastContainer {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 100000;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            pointer-events: none;
-        }
-
-        .toast-notification {
-            background: rgba(10, 10, 12, 0.9);
-            border: 1px solid var(--neon-red);
-            color: #fff;
-            padding: 16px 24px;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            letter-spacing: 1px;
-            box-shadow: 0 0 20px rgba(255, 0, 60, 0.3);
-            pointer-events: auto;
-            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(120%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
         .filter-btn {
             font-family: 'Orbitron', sans-serif;
             font-size: 10px;
@@ -294,13 +264,7 @@
             box-shadow: 0 0 15px rgba(255, 0, 60, 0.5);
         }
 
-        /* BANNER SUPERIOR DE MODO ADMINISTRADOR */
-        #adminStatusBar {
-            box-shadow: 0 4px 20px rgba(255, 0, 60, 0.4);
-            border-bottom: 2px solid var(--neon-red);
-        }
-
-        /* RENDIMIENTO PRO ACTIVO: Evita cálculos de layout hasta aproximarse con el scroll */
+        /* RENDIMIENTO PRO ACTIVO */
         #galeria-seccion {
             content-visibility: auto;
             contain-intrinsic-size: 800px;
@@ -309,27 +273,8 @@
 </head>
 <body class="overflow-x-hidden antialiased selection:bg-red-600 selection:text-white pb-24">
 
-    <!-- CANVAS INTERACTIVO DE FONDO (Onda estelar neón sobre la foto de fondo) -->
+    <!-- CANVAS INTERACTIVO DE FONDO -->
     <canvas id="bg-canvas"></canvas>
-
-    <!-- TOAST CONTAINER -->
-    <div id="toastContainer"></div>
-
-    <!-- BARRA DE ESTADO DEL ADMINISTRADOR (OCULTA POR DEFECTO) -->
-    <div id="adminStatusBar" class="hidden fixed top-0 left-0 w-full bg-black/95 z-[999] px-4 py-3 flex justify-between items-center backdrop-blur-md transition-all">
-        <div class="flex items-center gap-3">
-            <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
-            <span class="font-neon text-[10px] sm:text-xs tracking-widest text-white font-bold">🛠️ MODO ADMINISTRADOR ACTIVO</span>
-        </div>
-        <div class="flex items-center gap-2">
-            <button onclick="openModal('adminPanelModal')" class="bg-red-950/80 hover:bg-red-900 border border-red-500/30 text-[10px] font-neon px-3 py-1.5 rounded-lg text-red-400 font-bold transition-all uppercase tracking-wider">
-                Subir Archivo
-            </button>
-            <button onclick="logoutAdmin()" class="bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] font-neon px-3 py-1.5 rounded-lg font-bold transition-all uppercase tracking-wider">
-                Salir
-            </button>
-        </div>
-    </div>
 
     <!-- Navegación Premium -->
     <nav class="fixed w-full z-[100] bg-black/85 backdrop-blur-xl border-b border-red-950/40 transition-all duration-300" id="mainNav">
@@ -337,8 +282,7 @@
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0 flex items-center space-x-2">
                     <div class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></div>
-                    <!-- Clic secreto en "JOSE L I" para administrador -->
-                    <span onclick="openAdminLogin()" class="font-neon text-lg sm:text-2xl font-black tracking-widest text-white neon-text-red uppercase cursor-pointer hover:scale-105 transition-transform select-none">JOSE L I</span>
+                    <span class="font-neon text-lg sm:text-2xl font-black tracking-widest text-white neon-text-red uppercase select-none">JOSE L I</span>
                 </div>
                 <div class="flex items-center space-x-3 sm:space-x-6">
                     <a href="#galeria-seccion" class="font-neon text-red-500 hover:text-white px-4 py-2 border border-red-600/30 rounded-lg hover:bg-red-600/20 text-xs sm:text-sm tracking-widest transition-all">
@@ -360,8 +304,7 @@
             <h1 class="font-neon text-6xl md:text-[9.5rem] font-black mb-12 leading-none tracking-tighter">
                 <span class="text-white">JOSE</span> 
                 <br class="sm:hidden">
-                <!-- Clic secreto en "L I" para administrador -->
-                <span onclick="openAdminLogin()" class="text-red-600 neon-text-red animate-neon-pulse cursor-pointer hover:opacity-80 transition-opacity select-none tracking-widest pl-4 sm:pl-8">L I</span>
+                <span class="text-red-600 neon-text-red animate-neon-pulse tracking-widest pl-4 sm:pl-8">L I</span>
             </h1>
             
             <div class="flex flex-wrap gap-5 justify-center items-center">
@@ -399,7 +342,7 @@
             <div class="relative w-full rounded-2xl overflow-hidden neon-border-red bg-black/95">
                 <!-- Video Player -->
                 <video id="mainLargePlayer" controls class="w-full shadow-2xl relative z-10 hidden"></video>
-                <!-- Image Viewer (con bypass de hotlinking no-referrer) -->
+                <!-- Image Viewer -->
                 <img id="mainLargeImage" src="" referrerpolicy="no-referrer" alt="Vista Detallada" class="w-full shadow-2xl relative z-10 hidden" onerror="this.onerror=null; this.src='https://placehold.co/800x600/0d0d0f/ff003c?text=Imagen+No+Disponible'">
                 
                 <!-- Canvas para simulaciones generativas secundarias -->
@@ -465,164 +408,15 @@
                             <span>Fotos 📷</span>
                         </label>
                     </div>
-
-                    <!-- FILTRO PARA ADMINISTRADORES: OCULTAR ELEMENTOS POR DEFECTO -->
-                    <div id="adminDemoFilter" class="hidden items-center border-l border-white/25 pl-4 ml-2">
-                        <label class="flex items-center gap-2 cursor-pointer text-red-400 hover:text-red-300 font-neon text-[9px] uppercase tracking-wider">
-                            <input type="checkbox" id="hideDemoItemsCheckbox" onchange="toggleDemoItems()" class="accent-red-600 rounded">
-                            <span>Ocultar Demostración</span>
-                        </label>
-                    </div>
                 </div>
             </div>
 
-            <!-- GRID FLUIDO ESTILO MASONRY (Se expande y llena hacia abajo) -->
+            <!-- GRID FLUIDO ESTILO MASONRY -->
             <div id="mediaWallGrid" class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
                 <!-- Se rellena dinámicamente con JS -->
             </div>
         </div>
     </section>
-
-    <!-- MODAL DE CONTRASEÑA DE ADMINISTRADOR -->
-    <div id="adminPasswordModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'adminPasswordModal')">
-        <div class="card-glass p-8 rounded-3xl max-w-sm w-full border border-red-600/40 shadow-2xl relative">
-            <h3 class="font-neon text-xl text-white neon-text-red uppercase mb-6 text-center tracking-widest">Acceso Administrador</h3>
-            <div class="mb-6">
-                <label class="block text-gray-400 text-xs font-neon uppercase tracking-wider mb-2">Contraseña</label>
-                <input type="password" id="adminPasswordInput" class="w-full bg-black/60 border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 font-sans text-center tracking-widest" placeholder="••••••••">
-                <p id="passwordError" class="text-red-500 text-xs font-neon mt-2 text-center hidden">Contraseña incorrecta</p>
-            </div>
-            <div class="flex gap-4">
-                <button onclick="closeModal('adminPasswordModal')" class="flex-1 border border-white/10 hover:border-white/30 text-gray-400 hover:text-white font-neon text-xs uppercase py-3 rounded-xl transition-all">Cancelar</button>
-                <button onclick="checkAdminPassword()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-neon text-xs uppercase py-3 rounded-xl transition-all font-bold">Ingresar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DE CONFIRMACIÓN DE BORRADO EXCLUSIVO (NADA DE BROWSER ALERTS) -->
-    <div id="deleteConfirmModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'deleteConfirmModal')">
-        <div class="card-glass p-8 rounded-3xl max-w-sm w-full border border-red-600 shadow-2xl relative">
-            <div class="w-16 h-16 mx-auto bg-red-950/80 rounded-full flex items-center justify-center border border-red-600 shadow-[0_0_15px_rgba(255,0,60,0.5)] mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-            </div>
-            <h3 class="font-neon text-base text-white neon-text-red uppercase mb-2 text-center tracking-wider">¿Eliminar Archivo?</h3>
-            <p class="text-xs text-gray-300 text-center leading-relaxed mb-6 font-sans">
-                Esta acción borrará permanentemente el archivo <span id="deleteFileName" class="text-red-400 font-bold"></span> del portafolio. No podrás deshacer este cambio.
-            </p>
-            <div class="flex gap-4">
-                <button onclick="closeModal('deleteConfirmModal')" class="flex-1 border border-white/10 hover:border-white/20 text-gray-400 hover:text-white font-neon text-[10px] uppercase py-3 rounded-xl transition-all tracking-wider">Cancelar</button>
-                <button id="confirmDeleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-neon text-[10px] uppercase py-3 rounded-xl transition-all font-bold tracking-wider">Sí, Eliminar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DE EDICIÓN / CORRECCIÓN DE ARCHIVOS -->
-    <div id="editMediaModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'editMediaModal')">
-        <div class="media-container max-w-2xl bg-black/95 rounded-3xl border border-red-600/40 p-8 shadow-2xl">
-            <div class="flex justify-between items-center mb-6 border-b border-red-600/20 pb-4">
-                <h3 class="font-neon text-lg sm:text-xl text-white neon-text-red uppercase tracking-wider">✏️ Corregir / Editar Archivo</h3>
-                <button onclick="closeModal('editMediaModal')" class="text-gray-400 hover:text-red-500 font-neon text-xs tracking-widest uppercase">Cerrar</button>
-            </div>
-            <form id="editMediaForm" onsubmit="handleEditMediaSubmit(event)" class="space-y-4">
-                <input type="hidden" id="editMediaId">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Formato</label>
-                        <select id="editMediaTypeSelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
-                            <option value="video">🎥 Video (Enlace directo o archive.org)</option>
-                            <option value="photo">📷 Foto (Imagen directa .jpg o .png)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Categoría</label>
-                        <select id="editMediaCategorySelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
-                            <option value="vida">👤 Vida de José</option>
-                            <option value="turismo">🌴 Turismo</option>
-                            <option value="deporte">⚽ Deporte</option>
-                            <option value="educacion">📚 Educación</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Título del Archivo</label>
-                    <input type="text" id="editMediaTitleInput" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
-                </div>
-                <div>
-                    <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Enlace / URL de la Imagen o Video</label>
-                    <input type="url" id="editMediaUrlInput" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
-                    <!-- Caja de Alertas de Enlace para Edición -->
-                    <div id="editUrlWarningBox" class="hidden"></div>
-                </div>
-                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-neon text-xs uppercase py-3.5 rounded-xl transition-all font-bold tracking-widest">
-                    Guardar Cambios
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- PANEL DE ADMINISTRADOR DE CONTENIDO (SÓLO FORMULARIO) -->
-    <div id="adminPanelModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'adminPanelModal')">
-        <div class="media-container max-w-3xl bg-black/95 rounded-3xl border border-red-600/40 p-8 shadow-2xl">
-            <div class="flex justify-between items-center mb-8 border-b border-red-600/20 pb-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-3 h-3 rounded-full bg-red-600 animate-pulse"></div>
-                    <h3 class="font-neon text-lg sm:text-2xl text-white neon-text-red uppercase tracking-wider">Agregar Archivo Nuevo</h3>
-                </div>
-                <button onclick="closeModal('adminPanelModal')" class="text-gray-400 hover:text-red-500 font-neon text-xs tracking-widest uppercase border border-white/10 hover:border-red-500/30 px-4 py-2 rounded-lg transition-all">Cerrar</button>
-            </div>
-
-            <!-- Formulario para agregar Videos o Fotos -->
-            <div class="bg-red-950/10 border border-red-600/20 rounded-2xl p-6">
-                <h4 class="font-neon text-sm text-red-400 uppercase tracking-widest mb-4">Publicar Nuevo Archivo</h4>
-                
-                <!-- Guía rápida de URL para el Administrador -->
-                <div class="mb-4 bg-zinc-900/80 border border-white/5 rounded-xl p-3 text-[11px] text-gray-400 leading-relaxed font-sans">
-                    <p class="font-neon font-bold text-white mb-1 uppercase tracking-wider text-[10px] text-red-400">💡 Guía para copiar enlaces directos:</p>
-                    <ul class="list-disc list-inside space-y-1">
-                        <li><strong>Archive.org:</strong> En la sección derecha <em>"Download Options"</em>, haz clic derecho sobre "JPEG" o "PNG" y escoge <span class="text-white font-bold">"Copiar dirección de enlace"</span>.</li>
-                        <li><strong>Google Drive:</strong> Asegúrate de que el archivo tenga acceso de lectura pública. El sistema convertirá el enlace de visor a enlace de descarga automáticamente.</li>
-                    </ul>
-                </div>
-
-                <form id="addMediaForm" onsubmit="handleAddMedia(event)" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Formato</label>
-                            <select id="mediaTypeSelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs font-sans">
-                                <option value="video">🎥 Video (Enlace directo o archive.org)</option>
-                                <option value="photo">📷 Foto (Imagen directa .jpg o .png)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Categoría</label>
-                            <select id="mediaCategorySelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs font-sans">
-                                <option value="vida">👤 Vida de José</option>
-                                <option value="turismo">🌴 Turismo</option>
-                                <option value="deporte">⚽ Deporte</option>
-                                <option value="educacion">📚 Educación</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Título del Archivo</label>
-                            <input type="text" id="mediaTitleInput" required placeholder="Ej. MI HISTORIA" class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Enlace / URL de la Imagen o Video</label>
-                        <input type="url" id="mediaUrlInput" required placeholder="https://archive.org/download/..." class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
-                        
-                        <!-- Caja de Alertas de Enlace en tiempo real -->
-                        <div id="urlWarningBox" class="hidden"></div>
-                    </div>
-                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-neon text-sm uppercase py-3 rounded-xl transition-all font-bold tracking-widest flex items-center justify-center gap-2">
-                        <span>Publicar en la Galería</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- Footer Premium -->
     <footer class="py-16 border-t border-red-950/50 bg-black/90 relative z-10 backdrop-blur-md">
@@ -634,253 +428,42 @@
         </div>
     </footer>
 
-    <!-- Firebase SDK Modules -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, addDoc, deleteDoc, updateDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // CONFIGURACIÓN DE FIREBASE (Rule 1 Strict Paths)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'jose-li-media-portfolio';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "",
-                authDomain: "mock-project.firebaseapp.com",
-                projectId: "mock-project",
-                storageBucket: "mock-project.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:123"
-            };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        let userAuthenticated = false;
-        const mediaCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'media');
-
-        // Autenticación de Firebase (Rule 3 Compliance - Auth before Query)
-        async function authenticateUser() {
-            try {
-                const customToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-                if (customToken) {
-                    await signInWithCustomToken(auth, customToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.warn("Autenticación offline. Cargando modo demostración local:", error);
-                renderMediaWall();
-            }
-        }
-
-        // Listener de autenticación seguro
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                userAuthenticated = true;
-                subscribeToMediaWall();
-            }
-        });
-
-        // Suscribirse a cambios en Firestore (Rule 2: Plain query, sorting in memory)
-        function subscribeToMediaWall() {
-            if (!userAuthenticated) return;
-
-            onSnapshot(mediaCollectionRef, (snapshot) => {
-                window.customMediaItems = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    window.customMediaItems.push({
-                        id: doc.id,
-                        ...data
-                    });
-                });
-
-                // Ordenación en memoria JS para evitar errores de índice complejos de Firestore
-                window.customMediaItems.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-                renderMediaWall();
-            }, (error) => {
-                console.error("Firestore Error de sincronización:", error);
-            });
-
-            // ESCUCHAR AJUSTES GLOBALES DE LAS DEMOS ELIMINADAS (Para sincronizar en Incógnito / Otros celulares)
-            const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'deleted_demos');
-            onSnapshot(settingsDocRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    window.globalDeletedDemos = docSnap.data().list || [];
-                } else {
-                    window.globalDeletedDemos = [];
-                }
-                renderMediaWall();
-            }, (error) => {
-                console.warn("Ajustes globales offline o no inicializados en Firebase. Usando local.");
-            });
-        }
-
-        // Guardado de nuevos medios
-        window.saveMediaToDb = async function(type, category, title, url) {
-            if (!userAuthenticated) {
-                showToast("Falta autenticación con la base de datos.");
-                return;
-            }
-            try {
-                // Sanitizador automático del enlace antes de guardar
-                const finalUrl = cleanAndConvertUrl(url, type);
-
-                await addDoc(mediaCollectionRef, {
-                    type: type,
-                    category: category,
-                    title: title.trim().toUpperCase(),
-                    url: finalUrl,
-                    createdAt: Date.now()
-                });
-                showToast("¡Archivo publicado con éxito!");
-            } catch (err) {
-                console.error(err);
-                showToast("Error de conexión al guardar.");
-            }
-        }
-
-        // Modificación de medios existentes
-        window.updateMediaInDb = async function(id, type, category, title, url) {
-            if (!userAuthenticated) {
-                showToast("Falta autenticación.");
-                return;
-            }
-            try {
-                const finalUrl = cleanAndConvertUrl(url, type);
-                const documentRef = doc(db, 'artifacts', appId, 'public', 'data', 'media', id);
-                await updateDoc(documentRef, {
-                    type: type,
-                    category: category,
-                    title: title.trim().toUpperCase(),
-                    url: finalUrl
-                });
-                showToast("¡Cambios guardados con éxito!");
-            } catch (err) {
-                console.error(err);
-                showToast("Error de conexión al actualizar.");
-            }
-        }
-
-        // Borrado seguro
-        window.deleteMediaFromDb = async function(id) {
-            if (!userAuthenticated) return;
-            try {
-                const documentRef = doc(db, 'artifacts', appId, 'public', 'data', 'media', id);
-                await deleteDoc(documentRef);
-                showToast("Archivo eliminado de la galería.");
-            } catch (err) {
-                console.error(err);
-                showToast("No se pudo eliminar el archivo.");
-            }
-        }
-
-        // Guardar la exclusión global de las demos borradas en Firestore (Sincronización multidispositivo)
-        window.saveGlobalDeletedDemosToDb = async function(deletedList) {
-            if (!userAuthenticated || !db) return;
-            try {
-                const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'deleted_demos');
-                await setDoc(settingsDocRef, { list: deletedList });
-            } catch(err) {
-                console.error("Error al sincronizar borrado global en Firestore:", err);
-            }
-        }
-
-        authenticateUser();
-    </script>
-
     <script>
-        // ---------------------------------------------------------
-        // ⚙️ AJUSTE GLOBAL DE CONTENIDO DE DEMOSTRACIÓN:
-        // Si no quieres que las fotos y videos de muestra aparezcan NUNCA 
-        // para ningún usuario (incluso incógnitos o nuevos celulares), 
-        // cambia el valor de abajo a 'false':
-        const MOSTRAR_DEMOS_POR_DEFECTO = false;
-        // ---------------------------------------------------------
-
-        // ARCHIVOS POR DEFECTO OPTIMIZADOS (Categorizados estrictamente en Vida de José, Turismo, Deporte y Educación)
-        // Reducidas resoluciones de muestra de Unsplash (w=500, q=60) para optimización extrema de carga
-        const defaultMediaItems = [
-            { id: 'def1', type: 'video', category: 'vida', title: 'VIDA DE JOSÉ - MIS RELATOS DE JUVENTUD', url: 'inicio 1.mp4', isDemo: true },
-            { id: 'def2', type: 'photo', category: 'turismo', title: 'PAISAJE DE LA PLAYA DE VEGUETA', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=60', isDemo: true },
-            { id: 'def3', type: 'video', category: 'deporte', title: 'CAMPEONATO DE DEPORTE LOCAL', url: 'deporte 1.mp4', isDemo: true },
-            { id: 'def4', type: 'photo', category: 'educacion', title: 'EDUCACIÓN - TECNOLOGÍA EN EL AULA', url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=500&q=60', isDemo: true },
-            { id: 'def5', type: 'video', category: 'turismo', title: 'TURISMO EN VEGUETA - RECORRIDO CULTURAL', url: 'turismo 1.mp4', isDemo: true },
-            { id: 'def6', type: 'photo', category: 'vida', title: 'MIS RAÍCES Y RECUERDOS FAMILIARES', url: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=60', isDemo: true },
-            { id: 'def7', type: 'video', category: 'vida', title: 'HISTORIAS PERSONALES DE SUPERACIÓN', url: 'inicio 2.mp4', isDemo: true },
-            { id: 'def8', type: 'photo', category: 'deporte', title: 'ENTRENAMIENTO Y VIDA SALUDABLE', url: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=500&q=60', isDemo: true },
-            { id: 'def9', type: 'photo', category: 'turismo', title: 'EXPLORANDO NUEVAS RUTAS TURÍSTICAS', url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=500&q=60', isDemo: true },
-            { id: 'def10', type: 'video', category: 'educacion', title: 'CONVERSATORIO DE INNOVACIÓN EDUCATIVA', url: 'educacion 1.mp4', isDemo: true },
-            { id: 'def11', type: 'photo', category: 'educacion', title: 'TALLER DE LIDERAZGO JUVENIL', url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=500&q=60', isDemo: true },
-            { id: 'def12', type: 'video', category: 'turismo', title: 'ATRACTIVOS NATURALES DE LA REGIÓN', url: 'turismo 2.mp4', isDemo: true }
+        // =========================================================================================
+        // 🌟 LISTA DE CONTENIDOS EN LA NUBE (ARCHIVE.ORG) - ¡EDITA ESTA SECCIÓN PARA ACTUALIZAR TU WEB!
+        // -----------------------------------------------------------------------------------------
+        // Cuando subas un archivo nuevo a Archive.org, agrégalo aquí abajo siguiendo este formato.
+        // - 'type': puede ser 'photo' (para fotos) o 'video' (para videos).
+        // - 'category': puede ser 'vida', 'turismo', 'deporte' o 'educacion'.
+        // - 'title': El título que aparecerá en la tarjeta de tu muro de medios.
+        // - 'url': El enlace directo de descarga de tu archivo de Archive.org.
+        // =========================================================================================
+        const mediaItems = [
+            { 
+                id: '1', 
+                type: 'photo', 
+                category: 'educacion', 
+                title: 'PRONOEI VIRGEN DEL CARMEN - C.P LA FLORIDA', 
+                url: 'https://ia802801.us.archive.org/5/items/gemini-generated-image-fn-3gvpfn-3gvpfn-3g/Gemini_Generated_Image_1qm5711qm5711qm5.png' 
+            },
+            { 
+                id: '2', 
+                type: 'photo', 
+                category: 'vida', 
+                title: 'PRONOEI TRAVESURAS - C.P PRIMAVERA', 
+                url: 'https://ia802801.us.archive.org/5/items/gemini-generated-image-fn-3gvpfn-3gvpfn-3g/Gemini_Generated_Image_1qm5711qm5711qm5.png' 
+            }
+            // Agrega más elementos aquí abajo de la misma manera...
         ];
+        // =========================================================================================
 
-        window.customMediaItems = []; // Se sincroniza desde Firestore en tiempo real
-        window.globalDeletedDemos = []; // Recibidos dinámicamente desde Firestore para sincronización global
         let selectedCategory = 'all';
         let selectedFormat = 'all';
-        let isAdmin = false;
-        let hideDemoItems = false;
 
-        // --- VALIDACIONES Y CORRECCIÓN DE URL EN TIEMPO REAL ---
-        const mediaUrlInput = document.getElementById('mediaUrlInput');
-        if (mediaUrlInput) {
-            mediaUrlInput.addEventListener('input', () => {
-                const url = mediaUrlInput.value.trim();
-                const warningBox = document.getElementById('urlWarningBox');
-                
-                if (url.includes('archive.org/details/')) {
-                    warningBox.innerHTML = `
-                        <div class="mt-2 p-3 bg-red-950/90 border border-red-500/40 rounded-xl text-[11px] text-red-300 leading-relaxed font-neon">
-                            💡 <strong>¡ENLACE DE VISOR DETECTADO!</strong><br>
-                            Has pegado el visor de Archive.org en lugar del archivo directo. <br>
-                            <span class="text-white"><strong>¡No te preocupes!</strong> El sistema auto-corregirá este enlace cuando lo publiques reemplazando "details" por "download" para que cargue correctamente.</span>
-                        </div>
-                    `;
-                    warningBox.classList.remove('hidden');
-                } else if (url.includes('drive.google.com') && !url.includes('uc?')) {
-                    warningBox.innerHTML = `
-                        <div class="mt-2 p-3 bg-yellow-950/90 border border-yellow-500/40 rounded-xl text-[11px] text-yellow-300 leading-relaxed font-neon">
-                            💡 <strong>ENLACE DE GOOGLE DRIVE DETECTADO:</strong><br>
-                            Convertiremos este enlace automáticamente al publicar para que sea de descarga directa. Asegúrate de configurar la privacidad de Google Drive como "Público para cualquier persona con el enlace".
-                        </div>
-                    `;
-                    warningBox.classList.remove('hidden');
-                } else {
-                    warningBox.classList.add('hidden');
-                }
-            });
-        }
-
-        // Escucha cambios en el input de edición de URL en tiempo real
-        const editMediaUrlInput = document.getElementById('editMediaUrlInput');
-        if (editMediaUrlInput) {
-            editMediaUrlInput.addEventListener('input', () => {
-                const url = editMediaUrlInput.value.trim();
-                const warningBox = document.getElementById('editUrlWarningBox');
-                
-                if (url.includes('archive.org/details/')) {
-                    warningBox.innerHTML = `
-                        <div class="mt-2 p-3 bg-red-950/90 border border-red-500/40 rounded-xl text-[11px] text-red-300 leading-relaxed font-neon">
-                            💡 <strong>¡ENLACE DE VISOR DETECTADO!</strong><br>
-                            Has pegado el visor de Archive.org. Se corregirá automáticamente al guardar para cargarse correctamente.
-                        </div>
-                    `;
-                    warningBox.classList.remove('hidden');
-                } else {
-                    warningBox.classList.add('hidden');
-                }
-            });
-        }
-
-        // Convertidor inteligente mejorado para URLs comunes
+        // Convertidor inteligente para URLs de Archive.org y Drive
         function cleanAndConvertUrl(url, type) {
             let cleanUrl = url.trim();
 
-            // Convertir visor de Google Drive a enlace de descarga directa
             if (cleanUrl.includes('drive.google.com/file/d/')) {
                 const match = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
                 if (match && match[1]) {
@@ -889,7 +472,6 @@
                 }
             }
             
-            // Auto-corrección de Archive.org (details -> download)
             if (cleanUrl.includes('archive.org/details/')) {
                 cleanUrl = cleanUrl.replace('archive.org/details/', 'archive.org/download/');
             }
@@ -1066,27 +648,13 @@
             document.getElementById('visualizerIndicator').classList.add('hidden');
         }
 
-        // --- 3. DYNAMIC MASONRY RENDER ENGINE (GALLERY WALL) ---
+        // --- 3. RENDERING DEL MURO DE MEDIOS (MASONRY REAL) ---
         function renderMediaWall() {
             const gridContainer = document.getElementById('mediaWallGrid');
             if (!gridContainer) return;
 
-            // Combinamos los subidos de Firestore con los subidos locales y los por defecto (Filtrando los demos borrados)
-            const localItems = window.getLocalMediaItems();
-            let mergedList = [...window.customMediaItems, ...localItems];
-            
-            if (!hideDemoItems && MOSTRAR_DEMOS_POR_DEFECTO) {
-                // Combinar la exclusión local de localStorage con la sincronización global en Firestore
-                const localDeletedDemos = JSON.parse(localStorage.getItem('jose_li_deleted_demos') || '[]');
-                const globalDeletedDemos = window.globalDeletedDemos || [];
-                const allDeletedDemos = [...new Set([...localDeletedDemos, ...globalDeletedDemos])];
-
-                const activeDemos = defaultMediaItems.filter(item => !allDeletedDemos.includes(item.id));
-                mergedList = [...mergedList, ...activeDemos];
-            }
-
             // Filtro por categorías y formatos
-            const filteredList = mergedList.filter(item => {
+            const filteredList = mediaItems.filter(item => {
                 const matchesCategory = (selectedCategory === 'all') || (item.category === selectedCategory);
                 const matchesFormat = (selectedFormat === 'all') || (item.type === selectedFormat);
                 return matchesCategory && matchesFormat;
@@ -1133,31 +701,7 @@
                 };
                 const tagLabel = categoryLabels[item.category] || 'GENERAL';
 
-                // Si es admin, mostrar botones flotantes de edición y eliminación directa en cada tarjeta
-                let adminDeleteBtnHtml = '';
-                if (isAdmin) {
-                    adminDeleteBtnHtml = `
-                        <div class="absolute top-4 right-4 z-40 flex items-center gap-2">
-                            <!-- Botón para Editar (✏️ Lápiz) - Solo si NO es un demo -->
-                            ${!item.isDemo ? `
-                            <button onclick="requestEditMedia(event, '${item.id}')" class="bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-xl border border-blue-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Editar / Corregir título">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                </svg>
-                            </button>
-                            ` : ''}
-                            <!-- Botón para Eliminar (🗑️ Basura) - Ahora activo para todas las tarjetas, incluidas las Demos -->
-                            <button onclick="requestDeleteMedia(event, '${item.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl border border-red-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Eliminar de forma permanente">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
-                        </div>
-                    `;
-                }
-
                 card.innerHTML = `
-                    ${adminDeleteBtnHtml}
                     <div class="media-icon-badge">
                         ${iconSvg}
                     </div>
@@ -1165,7 +709,6 @@
                         <div class="flex flex-wrap gap-1.5 mb-2">
                             <span class="text-[8px] bg-red-950/90 text-red-400 px-2.5 py-1 rounded uppercase font-neon tracking-widest border border-red-500/20 font-bold">${tagLabel}</span>
                             <span class="text-[8px] bg-black/80 text-gray-300 px-2.5 py-1 rounded uppercase font-neon tracking-widest border border-white/10 font-bold">${item.type === 'video' ? 'VIDEO 🎥' : 'FOTO 📷'}</span>
-                            ${item.isDemo ? `<span class="text-[8px] bg-zinc-800 text-gray-300 px-2 py-0.5 rounded uppercase font-neon font-bold tracking-widest">Demo</span>` : ''}
                         </div>
                         <h3 class="font-neon text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate max-w-full drop-shadow-md">${item.title}</h3>
                     </div>
@@ -1177,10 +720,6 @@
 
         // Manejar el clic en la tarjeta de manera segura
         window.handleCardClick = function(event, type, url, title) {
-            // Evitar abrir el visor si se hace clic en cualquier botón del administrador
-            if (event.target.closest('button')) {
-                return;
-            }
             openLargeViewer(type, url, title);
         }
 
@@ -1198,15 +737,7 @@
             renderMediaWall();
         }
 
-        // --- 4. CONTROLADORES DE MODALES Y COMPORTAMIENTO UX ---
-        window.openModal = function(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.add('active'); 
-                document.body.style.overflow = 'hidden'; 
-            }
-        }
-
+        // --- 4. CONTROLADORES DE MODALES Y VISUALIZADOR ---
         window.closeModal = function(id) {
             const modal = document.getElementById(id);
             if (modal) {
@@ -1240,9 +771,11 @@
 
             titleElem.textContent = title || "VISTA MULTIMEDIA";
 
+            const cleanUrl = cleanAndConvertUrl(url, type);
+
             if (type === 'video') {
                 player.classList.remove('hidden');
-                player.src = url;
+                player.src = cleanUrl;
                 viewer.classList.add('active');
                 player.play().catch(error => {
                     console.log("Activando modo visualizador fallback generativo...");
@@ -1253,7 +786,7 @@
                 };
             } else {
                 image.classList.remove('hidden');
-                image.src = url;
+                image.src = cleanUrl;
                 viewer.classList.add('active');
             }
         }
@@ -1268,314 +801,23 @@
             stopSimulation();
         }
 
-        // --- 5. ADMINISTRADOR PRIVADO ---
-        window.openAdminLogin = function() {
-            document.getElementById('adminPasswordInput').value = '';
-            document.getElementById('passwordError').classList.add('hidden');
-            document.getElementById('urlWarningBox').classList.add('hidden');
-            openModal('adminPasswordModal');
-        }
-
-        window.checkAdminPassword = function() {
-            const input = document.getElementById('adminPasswordInput').value.trim();
-            if (input.toLowerCase() === 'joseli') {
-                closeModal('adminPasswordModal');
-                
-                // Activar el modo Admin de forma persistente temporal en sessionStorage
-                isAdmin = true;
-                sessionStorage.setItem('isAdminLi', 'true');
-                
-                applyAdminModeUI();
-                showToast("¡Modo Administrador Activo!");
-            } else {
-                const err = document.getElementById('passwordError');
-                err.classList.remove('hidden');
-                err.textContent = "Contraseña incorrecta. Intente de nuevo.";
-            }
-        }
-
-        window.applyAdminModeUI = function() {
-            if (isAdmin) {
-                document.getElementById('adminStatusBar').classList.remove('hidden');
-                document.getElementById('adminDemoFilter').classList.remove('hidden');
-                document.getElementById('mainNav').classList.add('mt-12'); // Empujar el Nav hacia abajo
-            } else {
-                document.getElementById('adminStatusBar').classList.add('hidden');
-                document.getElementById('adminDemoFilter').classList.add('hidden');
-                document.getElementById('mainNav').classList.remove('mt-12');
-            }
-            renderMediaWall();
-        }
-
-        window.logoutAdmin = function() {
-            isAdmin = false;
-            sessionStorage.removeItem('isAdminLi');
-            applyAdminModeUI();
-            showToast("Sesión cerrada.");
-        }
-
-        // Alternar visualización de demaostración
-        window.toggleDemoItems = function() {
-            const checkbox = document.getElementById('hideDemoItemsCheckbox');
-            hideDemoItems = checkbox.checked;
-            renderMediaWall();
-        }
-
-        // Auxiliares de LocalStorage para respaldo offline continuo
-        window.getLocalMediaItems = function() {
-            try {
-                const items = localStorage.getItem('jose_li_local_media');
-                return items ? JSON.parse(items) : [];
-            } catch(e) {
-                return [];
-            }
-        };
-
-        window.saveLocalMediaItem = function(newItem) {
-            try {
-                const items = window.getLocalMediaItems();
-                items.unshift(newItem);
-                localStorage.setItem('jose_li_local_media', JSON.stringify(items));
-                return true;
-            } catch(e) {
-                return false;
-            }
-        };
-
-        window.updateLocalMediaItem = function(id, type, category, title, url) {
-            try {
-                const items = window.getLocalMediaItems();
-                const index = items.findIndex(item => item.id === id);
-                if (index !== -1) {
-                    items[index].type = type;
-                    items[index].category = category;
-                    items[index].title = title.trim().toUpperCase();
-                    items[index].url = cleanAndConvertUrl(url, type);
-                    localStorage.setItem('jose_li_local_media', JSON.stringify(items));
-                    return true;
-                }
-                return false;
-            } catch(e) {
-                return false;
-            }
-        };
-
-        window.deleteLocalMediaItem = function(id) {
-            try {
-                const items = window.getLocalMediaItems();
-                const filtered = items.filter(item => item.id !== id);
-                localStorage.setItem('jose_li_local_media', JSON.stringify(filtered));
-                return true;
-            } catch(e) {
-                return false;
-            }
-        };
-
-        // Crear una solicitud de borrado
-        let pendingDeleteId = null;
-        window.requestDeleteMedia = function(event, id) {
-            event.stopPropagation(); // Detener propagación
-            pendingDeleteId = id;
-            
-            // Buscar el elemento en nuestra lista combinada en memoria para obtener su título real
-            const localItems = window.getLocalMediaItems();
-            const mergedList = [...window.customMediaItems, ...localItems, ...defaultMediaItems];
-            const foundItem = mergedList.find(i => i.id === id);
-            const titleText = foundItem ? foundItem.title : "este archivo";
-
-            document.getElementById('deleteFileName').textContent = `"${titleText}"`;
-            openModal('deleteConfirmModal');
-        }
-
-        // Confirmación final del botón del modal de eliminación
-        document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-            if (pendingDeleteId) {
-                closeModal('deleteConfirmModal');
-                
-                if (pendingDeleteId.startsWith('def')) {
-                    // Es un archivo de demostración por defecto, lo guardamos como eliminado localmente
-                    const deletedDemos = JSON.parse(localStorage.getItem('jose_li_deleted_demos') || '[]');
-                    if (!deletedDemos.includes(pendingDeleteId)) {
-                        deletedDemos.push(pendingDeleteId);
-                        localStorage.setItem('jose_li_deleted_demos', JSON.stringify(deletedDemos));
-                    }
-                    
-                    // Sincronizar el borrado del demo globalmente en la base de datos de Firestore
-                    if (window.globalDeletedDemos && !window.globalDeletedDemos.includes(pendingDeleteId)) {
-                        window.globalDeletedDemos.push(pendingDeleteId);
-                        if (window.saveGlobalDeletedDemosToDb) {
-                            await window.saveGlobalDeletedDemosToDb(window.globalDeletedDemos);
-                        }
-                    }
-
-                    showToast("Archivo de demostración eliminado.");
-                    renderMediaWall();
-                } else {
-                    let deletedFromFirebase = false;
-                    if (window.deleteMediaFromDb && !pendingDeleteId.startsWith('local_')) {
-                        try {
-                            await window.deleteMediaFromDb(pendingDeleteId);
-                            deletedFromFirebase = true;
-                        } catch(err) {
-                            console.warn("Fallo al eliminar de Firebase, intentando local.");
-                        }
-                    }
-                    
-                    // Si es local o falló Firebase, limpiar de LocalStorage
-                    if (!deletedFromFirebase || pendingDeleteId.startsWith('local_')) {
-                        window.deleteLocalMediaItem(pendingDeleteId);
-                        showToast("Archivo eliminado localmente.");
-                        renderMediaWall();
-                    }
-                }
-                
-                pendingDeleteId = null;
-            }
-        });
-
-        // Crear solicitud de edición
-        window.requestEditMedia = function(event, id) {
-            event.stopPropagation(); // Detener propagación
-            
-            const localItems = window.getLocalMediaItems();
-            const mergedList = [...window.customMediaItems, ...localItems];
-            const foundItem = mergedList.find(i => i.id === id);
-            
-            if (!foundItem) {
-                showToast("No se pudo cargar el archivo para editar.");
-                return;
-            }
-
-            document.getElementById('editMediaId').value = foundItem.id;
-            document.getElementById('editMediaTypeSelect').value = foundItem.type;
-            document.getElementById('editMediaCategorySelect').value = foundItem.category;
-            document.getElementById('editMediaTitleInput').value = foundItem.title;
-            document.getElementById('editMediaUrlInput').value = foundItem.url;
-            
-            document.getElementById('editUrlWarningBox').classList.add('hidden');
-            openModal('editMediaModal');
-        }
-
-        // Guardar cambios del formulario de edición
-        window.handleEditMediaSubmit = async function(e) {
-            e.preventDefault();
-            const id = document.getElementById('editMediaId').value;
-            const type = document.getElementById('editMediaTypeSelect').value;
-            const category = document.getElementById('editMediaCategorySelect').value;
-            const title = document.getElementById('editMediaTitleInput').value;
-            const url = document.getElementById('editMediaUrlInput').value;
-
-            if (!id || !title || !url) return;
-
-            let updatedInFirebase = false;
-            if (window.updateMediaInDb && !id.startsWith('local_')) {
-                try {
-                    await window.updateMediaInDb(id, type, category, title, url);
-                    updatedInFirebase = true;
-                } catch(err) {
-                    console.warn("Fallo al actualizar en Firebase, guardando cambios locales.");
-                }
-            }
-
-            if (!updatedInFirebase || id.startsWith('local_')) {
-                window.updateLocalMediaItem(id, type, category, title, url);
-                showToast("Cambios guardados localmente.");
-                renderMediaWall();
-            }
-
-            closeModal('editMediaModal');
-        }
-
-        // Registrar nuevo archivo
-        window.handleAddMedia = async function(e) {
-            e.preventDefault();
-            const type = document.getElementById('mediaTypeSelect').value;
-            const category = document.getElementById('mediaCategorySelect').value;
-            const title = document.getElementById('mediaTitleInput').value;
-            const url = document.getElementById('mediaUrlInput').value;
-
-            if (!title || !url) return;
-
-            const finalUrl = cleanAndConvertUrl(url, type);
-            const newItem = {
-                id: 'local_' + Date.now(),
-                type: type,
-                category: category,
-                title: title.trim().toUpperCase(),
-                url: finalUrl,
-                createdAt: Date.now()
-            };
-
-            let savedInFirebase = false;
-            if (window.saveMediaToDb) {
-                try {
-                    await window.saveMediaToDb(type, category, title, url);
-                    savedInFirebase = true;
-                } catch(err) {
-                    console.warn("Firebase no activo o sin credenciales. Usando modo de respaldo local.");
-                }
-            }
-
-            // Si Firebase no está configurado (como en GitHub Pages por defecto), guardamos en LocalStorage
-            if (!savedInFirebase) {
-                window.saveLocalMediaItem(newItem);
-                showToast("¡Publicado con éxito (Guardado localmente)!");
-                renderMediaWall();
-            }
-
-            document.getElementById('mediaTitleInput').value = '';
-            document.getElementById('mediaUrlInput').value = '';
-            document.getElementById('urlWarningBox').classList.add('hidden');
-            closeModal('adminPanelModal'); // Cerrar panel tras publicar
-        }
-
-        // --- 6. TOAST MESSENGER (NOTIFICACIONES DE NEÓN) ---
-        window.showToast = function(message) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast-notification';
-            toast.textContent = message;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.animation = 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) reverse';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // Atajos globales de teclado
+        // Atajos de teclado (Escape para cerrar visor)
         document.addEventListener('keydown', (e) => {
             if (e.key === "Escape") {
                 closeLargeViewer();
-                const modals = document.querySelectorAll('.modal-overlay');
-                modals.forEach(modal => {
-                    if(modal.classList.contains('active')) {
-                        closeModal(modal.id);
-                    }
-                });
             }
         });
 
-        // Inicio en la carga de página (Asíncrono / Carga pasiva del Canvas para acelerar renderizado inicial)
+        // Inicio en la carga de página (Asíncrono / Carga pasiva del Canvas para velocidad extrema)
         window.onload = function() {
             resizeBgCanvas();
             initBgParticles();
             
-            // Retrasar levemente el inicio de la simulación de partículas de fondo para dar prioridad al renderizado del DOM
             setTimeout(() => {
                 animateBgParticles();
             }, 50);
 
-            // Comprobar si el administrador estaba logueado
-            if (sessionStorage.getItem('isAdminLi') === 'true') {
-                isAdmin = true;
-                applyAdminModeUI();
-            } else {
-                renderMediaWall();
-            }
-
-            const modals = document.querySelectorAll('.modal-overlay');
-            modals.forEach(m => m.classList.remove('active'));
+            renderMediaWall();
         };
     </script>
 </body>
