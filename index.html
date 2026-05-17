@@ -827,7 +827,12 @@
 
             // Unimos los elementos estáticos y los temporales locales agregados
             const localItems = getLocalMediaItems();
-            const mergedList = [...localItems, ...mediaItems];
+            
+            // Filtrar los elementos de la lista estática (mediaItems) que hayan sido eliminados en la sesión local
+            const deletedStaticIds = JSON.parse(localStorage.getItem('jose_li_deleted_static_ids') || '[]');
+            const activeStaticItems = mediaItems.filter(item => !deletedStaticIds.includes(item.id));
+            
+            const mergedList = [...localItems, ...activeStaticItems];
 
             // Filtro por categorías y formatos
             const filteredList = mergedList.filter(item => {
@@ -866,7 +871,7 @@
                 // Icono neón
                 const iconSvg = item.type === 'video' 
                     ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>`
-                    : `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542 7z" /></svg>`;
+                    : `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>`;
 
                 const categoryLabels = {
                     vida: 'VIDA DE JOSÉ',
@@ -1096,10 +1101,14 @@
             if (pendingDeleteId) {
                 closeModal('deleteConfirmModal');
                 
-                // Si el elemento es de la lista estática (mediaItems), lo guardamos temporalmente como excluido
+                // Si el elemento es de la lista estática (mediaItems), lo guardamos temporalmente como excluido en localStorage
                 if (!pendingDeleteId.startsWith('local_')) {
-                    // Eliminamos el elemento de la lista estática del código haciendo una copia modificada
-                    showToast("No se pueden eliminar elementos integrados en código de forma directa. Elimínalos del arreglo JS.");
+                    const deletedStaticIds = JSON.parse(localStorage.getItem('jose_li_deleted_static_ids') || '[]');
+                    if (!deletedStaticIds.includes(pendingDeleteId)) {
+                        deletedStaticIds.push(pendingDeleteId);
+                        localStorage.setItem('jose_li_deleted_static_ids', JSON.stringify(deletedStaticIds));
+                    }
+                    showToast("Archivo eliminado del borrador.");
                 } else {
                     const localItems = getLocalMediaItems();
                     const filtered = localItems.filter(item => item.id !== pendingDeleteId);
@@ -1114,19 +1123,28 @@
 
         // 📋 EXPORTADOR DEL CÓDIGO ACTUALIZADO PARA GITHUB
         window.exportCodeForGithub = function() {
-            // Obtenemos la lista combinada completa (estáticos + los nuevos que subió en esta sesión)
+            // Obtenemos la lista combinada completa filtrando los estáticos eliminados
             const localItems = getLocalMediaItems();
-            const fullCombinedList = [...localItems, ...mediaItems];
+            const deletedStaticIds = JSON.parse(localStorage.getItem('jose_li_deleted_static_ids') || '[]');
+            const activeStaticItems = mediaItems.filter(item => !deletedStaticIds.includes(item.id));
+            
+            const fullCombinedList = [...localItems, ...activeStaticItems];
 
-            // Formatear el listado JS elegantemente como un string JSON limpio
-            const formattedArrayString = JSON.stringify(fullCombinedList, null, 12);
+            // Re-mapear para normalizar la lista eliminando prefijos "local_" en los IDs estáticos exportados
+            const cleanExportedList = fullCombinedList.map((item, index) => ({
+                id: (index + 1).toString(),
+                type: item.type,
+                category: item.category,
+                title: item.title,
+                url: item.url
+            }));
 
             // Generar todo el código HTML de este archivo reemplazando el bloque del array
             let entireHtml = document.documentElement.outerHTML;
             
             // Reemplazar la sección "const mediaItems = [...];" con los nuevos elementos actualizados
             const arrayRegex = /const\s+mediaItems\s*=\s*\[[\s\S]*?\];/;
-            const replacementString = `const mediaItems = ${JSON.stringify(fullCombinedList, null, 8)};`;
+            const replacementString = `const mediaItems = ${JSON.stringify(cleanExportedList, null, 8)};`;
             
             entireHtml = entireHtml.replace(arrayRegex, replacementString);
             
@@ -1141,8 +1159,16 @@
             const textarea = document.getElementById('exportedCodeTextarea');
             textarea.select();
             document.execCommand('copy');
-            showToast("¡Código copiado al portapapeles! Ahora pégalo en GitHub.");
+            
+            // Limpiar los borradores locales temporales ya que ahora se integrarán estáticamente en el nuevo código de su GitHub
+            localStorage.removeItem('jose_li_local_media');
+            localStorage.removeItem('jose_li_deleted_static_ids');
+            
+            showToast("¡Código copiado! Tu borrador se ha limpiado. Pégalo en tu GitHub index.html.");
             closeModal('exportCodeModal');
+            
+            // Forzar actualización inmediata del muro
+            renderMediaWall();
         };
 
         // --- NOTIFICACIONES TOAST ---
