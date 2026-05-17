@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jose L I | Muro de Medios Neón Premium</title>
+    
+    <!-- OPTIMIZACIONES DE VELOCIDAD DE CARGA: PRECONEXIONES Y PRECARGAS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="fondo1.jpg">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -292,6 +298,12 @@
         #adminStatusBar {
             box-shadow: 0 4px 20px rgba(255, 0, 60, 0.4);
             border-bottom: 2px solid var(--neon-red);
+        }
+
+        /* RENDIMIENTO PRO ACTIVO: Evita cálculos de layout hasta aproximarse con el scroll */
+        #galeria-seccion {
+            content-visibility: auto;
+            contain-intrinsic-size: 800px;
         }
     </style>
 </head>
@@ -758,18 +770,19 @@
 
     <script>
         // ARCHIVOS POR DEFECTO OPTIMIZADOS (Categorizados estrictamente en Vida de José, Turismo, Deporte y Educación)
+        // Reducidas resoluciones de muestra de Unsplash (w=500, q=60) para optimización extrema de carga
         const defaultMediaItems = [
             { id: 'def1', type: 'video', category: 'vida', title: 'VIDA DE JOSÉ - MIS RELATOS DE JUVENTUD', url: 'inicio 1.mp4', isDemo: true },
-            { id: 'def2', type: 'photo', category: 'turismo', title: 'PAISAJE DE LA PLAYA DE VEGUETA', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', isDemo: true },
+            { id: 'def2', type: 'photo', category: 'turismo', title: 'PAISAJE DE LA PLAYA DE VEGUETA', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=60', isDemo: true },
             { id: 'def3', type: 'video', category: 'deporte', title: 'CAMPEONATO DE DEPORTE LOCAL', url: 'deporte 1.mp4', isDemo: true },
-            { id: 'def4', type: 'photo', category: 'educacion', title: 'EDUCACIÓN - TECNOLOGÍA EN EL AULA', url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80', isDemo: true },
+            { id: 'def4', type: 'photo', category: 'educacion', title: 'EDUCACIÓN - TECNOLOGÍA EN EL AULA', url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=500&q=60', isDemo: true },
             { id: 'def5', type: 'video', category: 'turismo', title: 'TURISMO EN VEGUETA - RECORRIDO CULTURAL', url: 'turismo 1.mp4', isDemo: true },
-            { id: 'def6', type: 'photo', category: 'vida', title: 'MIS RAÍCES Y RECUERDOS FAMILIARES', url: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80', isDemo: true },
+            { id: 'def6', type: 'photo', category: 'vida', title: 'MIS RAÍCES Y RECUERDOS FAMILIARES', url: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=60', isDemo: true },
             { id: 'def7', type: 'video', category: 'vida', title: 'HISTORIAS PERSONALES DE SUPERACIÓN', url: 'inicio 2.mp4', isDemo: true },
-            { id: 'def8', type: 'photo', category: 'deporte', title: 'ENTRENAMIENTO Y VIDA SALUDABLE', url: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80', isDemo: true },
-            { id: 'def9', type: 'photo', category: 'turismo', title: 'EXPLORANDO NUEVAS RUTAS TURÍSTICAS', url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80', isDemo: true },
+            { id: 'def8', type: 'photo', category: 'deporte', title: 'ENTRENAMIENTO Y VIDA SALUDABLE', url: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=500&q=60', isDemo: true },
+            { id: 'def9', type: 'photo', category: 'turismo', title: 'EXPLORANDO NUEVAS RUTAS TURÍSTICAS', url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=500&q=60', isDemo: true },
             { id: 'def10', type: 'video', category: 'educacion', title: 'CONVERSATORIO DE INNOVACIÓN EDUCATIVA', url: 'educacion 1.mp4', isDemo: true },
-            { id: 'def11', type: 'photo', category: 'educacion', title: 'TALLER DE LIDERAZGO JUVENIL', url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80', isDemo: true },
+            { id: 'def11', type: 'photo', category: 'educacion', title: 'TALLER DE LIDERAZGO JUVENIL', url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=500&q=60', isDemo: true },
             { id: 'def12', type: 'video', category: 'turismo', title: 'ATRACTIVOS NATURALES DE LA REGIÓN', url: 'turismo 2.mp4', isDemo: true }
         ];
 
@@ -1489,11 +1502,15 @@
             }
         });
 
-        // Inicio en la carga de página
+        // Inicio en la carga de página (Asíncrono / Carga pasiva del Canvas para acelerar renderizado inicial)
         window.onload = function() {
             resizeBgCanvas();
             initBgParticles();
-            animateBgParticles();
+            
+            // Retrasar levemente el inicio de la simulación de partículas de fondo para dar prioridad al renderizado del DOM
+            setTimeout(() => {
+                animateBgParticles();
+            }, 50);
 
             // Comprobar si el administrador estaba logueado
             if (sessionStorage.getItem('isAdminLi') === 'true') {
