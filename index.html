@@ -345,16 +345,12 @@
                 <span class="text-[10px] sm:text-xs font-neon tracking-widest text-red-400 uppercase font-bold">PORTAFOLIO OFICIAL</span>
             </div>
             
-            <h1 class="font-neon text-6xl md:text-[9.5rem] font-black mb-8 leading-none tracking-tighter">
+            <h1 class="font-neon text-6xl md:text-[9.5rem] font-black mb-12 leading-none tracking-tighter">
                 <span class="text-white">JOSE</span> 
                 <br class="sm:hidden">
                 <!-- Clic secreto en "L I" para administrador -->
                 <span onclick="openAdminLogin()" class="text-red-600 neon-text-red animate-neon-pulse cursor-pointer hover:opacity-80 transition-opacity select-none tracking-widest pl-4 sm:pl-8">L I</span>
             </h1>
-            
-            <p class="text-white text-xs sm:text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light tracking-widest uppercase bg-black/60 backdrop-blur-md inline-block px-6 py-4 rounded-2xl border border-red-600/20 shadow-2xl">
-                Vida de José <span class="text-red-500 mx-2">•</span> Turismo <span class="text-red-500 mx-2">•</span> Deporte <span class="text-red-500 mx-2">•</span> Educación
-            </p>
             
             <div class="flex flex-wrap gap-5 justify-center items-center">
                 <!-- Facebook Button -->
@@ -510,6 +506,50 @@
         </div>
     </div>
 
+    <!-- MODAL DE EDICIÓN / CORRECCIÓN DE ARCHIVOS -->
+    <div id="editMediaModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'editMediaModal')">
+        <div class="media-container max-w-2xl bg-black/95 rounded-3xl border border-red-600/40 p-8 shadow-2xl">
+            <div class="flex justify-between items-center mb-6 border-b border-red-600/20 pb-4">
+                <h3 class="font-neon text-lg sm:text-xl text-white neon-text-red uppercase tracking-wider">✏️ Corregir / Editar Archivo</h3>
+                <button onclick="closeModal('editMediaModal')" class="text-gray-400 hover:text-red-500 font-neon text-xs tracking-widest uppercase">Cerrar</button>
+            </div>
+            <form id="editMediaForm" onsubmit="handleEditMediaSubmit(event)" class="space-y-4">
+                <input type="hidden" id="editMediaId">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Formato</label>
+                        <select id="editMediaTypeSelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                            <option value="video">🎥 Video (Enlace directo o archive.org)</option>
+                            <option value="photo">📷 Foto (Imagen directa .jpg o .png)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Categoría</label>
+                        <select id="editMediaCategorySelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                            <option value="vida">👤 Vida de José</option>
+                            <option value="turismo">🌴 Turismo</option>
+                            <option value="deporte">⚽ Deporte</option>
+                            <option value="educacion">📚 Educación</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Título del Archivo</label>
+                    <input type="text" id="editMediaTitleInput" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                </div>
+                <div>
+                    <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Enlace / URL de la Imagen o Video</label>
+                    <input type="url" id="editMediaUrlInput" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                    <!-- Caja de Alertas de Enlace para Edición -->
+                    <div id="editUrlWarningBox" class="hidden"></div>
+                </div>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-neon text-xs uppercase py-3.5 rounded-xl transition-all font-bold tracking-widest">
+                    Guardar Cambios
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- PANEL DE ADMINISTRADOR DE CONTENIDO (SÓLO FORMULARIO) -->
     <div id="adminPanelModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'adminPanelModal')">
         <div class="media-container max-w-3xl bg-black/95 rounded-3xl border border-red-600/40 p-8 shadow-2xl">
@@ -572,37 +612,21 @@
         </div>
     </div>
 
-    <!-- Footer Premium -->
-    <footer class="py-16 border-t border-red-950/50 bg-black/90 relative z-10 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="font-neon text-xs sm:text-sm text-gray-400 uppercase tracking-widest leading-loose">
-                &copy; 2026 <span class="text-red-600 neon-text-red">JOSE L I</span>. TODOS LOS DERECHOS RESERVADOS. <br class="sm:hidden"> 
-                <span class="text-gray-500 font-medium">VIDA DE JOSÉ • TURISMO • DEPORTE • EDUCACIÓN.</span>
-            </p>
-        </div>
-    </footer>
-
     <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, addDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, addDoc, deleteDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // CONFIGURACIÓN DE FIREBASE (Rule 1 Strict Paths)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'jose-li-media-portfolio';
-        
-        /* * 📝 NOTA PARA DESPLIEGUE EN GITHUB PAGES:
-         * Si quieres conectar tu propia base de datos Firebase real para que guarde tus fotos y videos 
-         * en la nube permanentemente fuera de nuestro entorno de pruebas, reemplaza el objeto de abajo 
-         * por tus propias credenciales que te proporciona la consola de Firebase (https://console.firebase.google.com/):
-         */
         const firebaseConfig = typeof __firebase_config !== 'undefined' 
             ? JSON.parse(__firebase_config) 
             : {
-                apiKey: "TU_API_KEY_AQUÍ",
-                authDomain: "TU-PROYECTO.firebaseapp.com",
-                projectId: "TU-PROYECTO-ID",
-                storageBucket: "TU-PROYECTO.appspot.com",
+                apiKey: "",
+                authDomain: "mock-project.firebaseapp.com",
+                projectId: "mock-project",
+                storageBucket: "mock-project.appspot.com",
                 messagingSenderId: "123456789",
                 appId: "1:123456789:web:123"
             };
@@ -624,7 +648,7 @@
                     await signInAnonymously(auth);
                 }
             } catch (error) {
-                console.warn("Autenticación offline o credenciales por defecto. Cargando modo demostración local:", error);
+                console.warn("Autenticación offline. Cargando modo demostración local:", error);
                 renderMediaWall();
             }
         }
@@ -681,6 +705,28 @@
             } catch (err) {
                 console.error(err);
                 showToast("Error de conexión al guardar.");
+            }
+        }
+
+        // Modificación de medios existentes
+        window.updateMediaInDb = async function(id, type, category, title, url) {
+            if (!userAuthenticated) {
+                showToast("Falta autenticación.");
+                return;
+            }
+            try {
+                const finalUrl = cleanAndConvertUrl(url, type);
+                const documentRef = doc(db, 'artifacts', appId, 'public', 'data', 'media', id);
+                await updateDoc(documentRef, {
+                    type: type,
+                    category: category,
+                    title: title.trim().toUpperCase(),
+                    url: finalUrl
+                });
+                showToast("¡Cambios guardados con éxito!");
+            } catch (err) {
+                console.error(err);
+                showToast("Error de conexión al actualizar.");
             }
         }
 
@@ -744,6 +790,27 @@
                         <div class="mt-2 p-3 bg-yellow-950/90 border border-yellow-500/40 rounded-xl text-[11px] text-yellow-300 leading-relaxed font-neon">
                             💡 <strong>ENLACE DE GOOGLE DRIVE DETECTADO:</strong><br>
                             Convertiremos este enlace automáticamente al publicar para que sea de descarga directa. Asegúrate de configurar la privacidad de Google Drive como "Público para cualquier persona con el enlace".
+                        </div>
+                    `;
+                    warningBox.classList.remove('hidden');
+                } else {
+                    warningBox.classList.add('hidden');
+                }
+            });
+        }
+
+        // Escucha cambios en el input de edición de URL en tiempo real
+        const editMediaUrlInput = document.getElementById('editMediaUrlInput');
+        if (editMediaUrlInput) {
+            editMediaUrlInput.addEventListener('input', () => {
+                const url = editMediaUrlInput.value.trim();
+                const warningBox = document.getElementById('editUrlWarningBox');
+                
+                if (url.includes('archive.org/details/')) {
+                    warningBox.innerHTML = `
+                        <div class="mt-2 p-3 bg-red-950/90 border border-red-500/40 rounded-xl text-[11px] text-red-300 leading-relaxed font-neon">
+                            💡 <strong>¡ENLACE DE VISOR DETECTADO!</strong><br>
+                            Has pegado el visor de Archive.org. Se corregirá automáticamente al guardar para cargarse correctamente.
                         </div>
                     `;
                     warningBox.classList.remove('hidden');
@@ -977,7 +1044,7 @@
                 const heightClass = index % 3 === 0 ? 'h-64' : (index % 3 === 1 ? 'h-80' : 'h-72');
                 card.classList.add(heightClass);
                 
-                card.setAttribute('onclick', `handleCardClick(event, '${item.type}', '${item.url}', '${item.title}')`);
+                card.setAttribute('onclick', `handleCardClick(event, '${item.type}', '${item.url}', \`${item.title.replace(/'/g, "\\'")}\`)`);
 
                 // Thumbnail seguro
                 const cleanTitle = encodeURIComponent(item.title);
@@ -1003,22 +1070,32 @@
                 };
                 const tagLabel = categoryLabels[item.category] || 'GENERAL';
 
-                // Si es admin y NO es un demo, mostrar el botón flotante de eliminación
+                // Si es admin, mostrar botones flotantes de edición y eliminación directa en cada tarjeta
                 let adminDeleteBtnHtml = '';
                 if (isAdmin) {
                     if (item.isDemo) {
                         adminDeleteBtnHtml = `
-                            <div class="absolute top-4 right-4 z-30 bg-zinc-800/90 text-[8px] font-neon tracking-wider border border-white/15 text-gray-300 px-2.5 py-1 rounded-lg uppercase select-none">
-                                Demostración
+                            <div class="absolute top-4 right-4 z-30 bg-zinc-800/95 text-[8px] font-neon tracking-wider border border-white/10 text-gray-300 px-2.5 py-1.5 rounded-lg uppercase select-none shadow-md">
+                                Demo
                             </div>
                         `;
                     } else {
+                        // Pasamos de forma segura usando atributos de datos para evitar romper las cadenas
                         adminDeleteBtnHtml = `
-                            <button onclick="requestDeleteMedia(event, '${item.id}', '${item.title}')" class="absolute top-4 right-4 z-40 bg-red-600 hover:bg-red-700 text-white p-2 rounded-xl border border-red-500 shadow-lg hover:scale-110 active:scale-95 transition-all" title="Eliminar archivo">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
+                            <div class="absolute top-4 right-4 z-40 flex items-center gap-2">
+                                <!-- Botón para Editar (✏️ Lápiz) -->
+                                <button onclick="requestEditMedia(event, '${item.id}')" class="bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-xl border border-blue-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Editar / Corregir título">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                </button>
+                                <!-- Botón para Eliminar (🗑️ Basura) -->
+                                <button onclick="requestDeleteMedia(event, '${item.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl border border-red-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Eliminar de forma permanente">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
                         `;
                     }
                 }
@@ -1042,8 +1119,8 @@
         }
 
         // Manejar el clic en la tarjeta de manera segura
-        function handleCardClick(event, type, url, title) {
-            // Evitar abrir el visor si se hace clic en el botón de borrar de los administradores
+        window.handleCardClick = function(event, type, url, title) {
+            // Evitar abrir el visor si se hace clic en cualquier botón del administrador
             if (event.target.closest('button')) {
                 return;
             }
@@ -1051,7 +1128,7 @@
         }
 
         // Filtros de categoría
-        function filterCategory(cat) {
+        window.filterCategory = function(cat) {
             selectedCategory = cat;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`cat-${cat}`).classList.add('active');
@@ -1059,13 +1136,13 @@
         }
 
         // Filtros de formatos (Fotos/Videos)
-        function filterFormat(format) {
+        window.filterFormat = function(format) {
             selectedFormat = format;
             renderMediaWall();
         }
 
         // --- 4. CONTROLADORES DE MODALES Y COMPORTAMIENTO UX ---
-        function openModal(id) {
+        window.openModal = function(id) {
             const modal = document.getElementById(id);
             if (modal) {
                 modal.classList.add('active'); 
@@ -1073,7 +1150,7 @@
             }
         }
 
-        function closeModal(id) {
+        window.closeModal = function(id) {
             const modal = document.getElementById(id);
             if (modal) {
                 modal.classList.remove('active'); 
@@ -1081,7 +1158,7 @@
             }
         }
 
-        function handleOutsideClick(event, id) {
+        window.handleOutsideClick = function(event, id) {
             if(event.target.id === id) {
                 if(id === 'mediaViewer') {
                     closeLargeViewer();
@@ -1091,7 +1168,7 @@
             }
         }
 
-        function openLargeViewer(type, url, title) {
+        window.openLargeViewer = function(type, url, title) {
             const viewer = document.getElementById('mediaViewer');
             const player = document.getElementById('mainLargePlayer');
             const image = document.getElementById('mainLargeImage');
@@ -1124,7 +1201,7 @@
             }
         }
 
-        function closeLargeViewer() {
+        window.closeLargeViewer = function() {
             const viewer = document.getElementById('mediaViewer');
             const player = document.getElementById('mainLargePlayer');
             
@@ -1135,14 +1212,14 @@
         }
 
         // --- 5. ADMINISTRADOR PRIVADO ---
-        function openAdminLogin() {
+        window.openAdminLogin = function() {
             document.getElementById('adminPasswordInput').value = '';
             document.getElementById('passwordError').classList.add('hidden');
             document.getElementById('urlWarningBox').classList.add('hidden');
             openModal('adminPasswordModal');
         }
 
-        function checkAdminPassword() {
+        window.checkAdminPassword = function() {
             const input = document.getElementById('adminPasswordInput').value.trim();
             if (input.toLowerCase() === 'joseli') {
                 closeModal('adminPasswordModal');
@@ -1160,7 +1237,7 @@
             }
         }
 
-        function applyAdminModeUI() {
+        window.applyAdminModeUI = function() {
             if (isAdmin) {
                 document.getElementById('adminStatusBar').classList.remove('hidden');
                 document.getElementById('adminDemoFilter').classList.remove('hidden');
@@ -1173,7 +1250,7 @@
             renderMediaWall();
         }
 
-        function logoutAdmin() {
+        window.logoutAdmin = function() {
             isAdmin = false;
             sessionStorage.removeItem('isAdminLi');
             applyAdminModeUI();
@@ -1181,7 +1258,7 @@
         }
 
         // Alternar visualización de demostración
-        function toggleDemoItems() {
+        window.toggleDemoItems = function() {
             const checkbox = document.getElementById('hideDemoItemsCheckbox');
             hideDemoItems = checkbox.checked;
             renderMediaWall();
@@ -1189,14 +1266,19 @@
 
         // Crear una solicitud de borrado
         let pendingDeleteId = null;
-        function requestDeleteMedia(event, id, title) {
-            event.stopPropagation(); // Detener propagación para que no se abra la vista grande
+        window.requestDeleteMedia = function(event, id) {
+            event.stopPropagation(); // Detener propagación
             pendingDeleteId = id;
-            document.getElementById('deleteFileName').textContent = `"${title}"`;
+            
+            // Buscar el elemento en nuestra lista en memoria para obtener su título real
+            const foundItem = window.customMediaItems.find(i => i.id === id);
+            const titleText = foundItem ? foundItem.title : "este archivo";
+
+            document.getElementById('deleteFileName').textContent = `"${titleText}"`;
             openModal('deleteConfirmModal');
         }
 
-        // Confirmación final del botón del modal
+        // Confirmación final del botón del modal de eliminación
         document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
             if (pendingDeleteId) {
                 closeModal('deleteConfirmModal');
@@ -1207,7 +1289,47 @@
             }
         });
 
-        async function handleAddMedia(e) {
+        // Crear solicitud de edición
+        window.requestEditMedia = function(event, id) {
+            event.stopPropagation(); // Detener propagación
+            
+            const foundItem = window.customMediaItems.find(i => i.id === id);
+            if (!foundItem) {
+                showToast("No se pudo cargar el archivo para editar.");
+                return;
+            }
+
+            document.getElementById('editMediaId').value = foundItem.id;
+            document.getElementById('editMediaTypeSelect').value = foundItem.type;
+            document.getElementById('editMediaCategorySelect').value = foundItem.category;
+            document.getElementById('editMediaTitleInput').value = foundItem.title;
+            document.getElementById('editMediaUrlInput').value = foundItem.url;
+            
+            document.getElementById('editUrlWarningBox').classList.add('hidden');
+            openModal('editMediaModal');
+        }
+
+        // Guardar cambios del formulario de edición
+        window.handleEditMediaSubmit = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('editMediaId').value;
+            const type = document.getElementById('editMediaTypeSelect').value;
+            const category = document.getElementById('editMediaCategorySelect').value;
+            const title = document.getElementById('editMediaTitleInput').value;
+            const url = document.getElementById('editMediaUrlInput').value;
+
+            if (!id || !title || !url) return;
+
+            if (window.updateMediaInDb) {
+                await window.updateMediaInDb(id, type, category, title, url);
+                closeModal('editMediaModal');
+            } else {
+                showToast("Sincronización no disponible.");
+            }
+        }
+
+        // Registrar nuevo archivo
+        window.handleAddMedia = async function(e) {
             e.preventDefault();
             const type = document.getElementById('mediaTypeSelect').value;
             const category = document.getElementById('mediaCategorySelect').value;
@@ -1228,7 +1350,7 @@
         }
 
         // --- 6. TOAST MESSENGER (NOTIFICACIONES DE NEÓN) ---
-        function showToast(message) {
+        window.showToast = function(message) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = 'toast-notification';
