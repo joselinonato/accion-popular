@@ -341,7 +341,9 @@
                 <div class="flex-shrink-0 flex items-center space-x-2">
                     <div class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></div>
                     <!-- Clic secreto en JOSE L I para abrir inicio de sesión -->
-                    <span onclick="openAdminLogin()" class="font-neon text-lg sm:text-2xl font-black tracking-widest text-white neon-text-red uppercase cursor-pointer hover:scale-105 transition-transform select-none">JOSE L I</span>
+                    <span onclick="openAdminLogin()" class="font-neon text-lg sm:text-2xl font-black text-white neon-text-red uppercase cursor-pointer hover:scale-105 transition-transform select-none">
+                        JOSE L<span style="margin-left: 0.18em;">I</span>
+                    </span>
                 </div>
                 <div class="flex items-center space-x-3 sm:space-x-6">
                     <a href="#galeria-seccion" class="font-neon text-red-500 hover:text-white px-4 py-2 border border-red-600/30 rounded-lg hover:bg-red-600/20 text-xs sm:text-sm tracking-widest transition-all">
@@ -361,10 +363,12 @@
             </div>
             
             <h1 class="font-neon text-6xl md:text-[9.5rem] font-black mb-12 leading-none tracking-tighter">
-                <span class="text-white">JOSE</span> 
+                <span class="text-white font-black">JOSE</span> 
                 <br class="sm:hidden">
-                <!-- Clic secreto en L I para abrir administrador -->
-                <span onclick="openAdminLogin()" class="text-red-600 neon-text-red animate-neon-pulse cursor-pointer hover:opacity-80 transition-opacity select-none tracking-widest pl-4 sm:pl-8">L I</span>
+                <!-- Clic secreto en L I para abrir administrador (Espaciado perfeccionado y cercano) -->
+                <span onclick="openAdminLogin()" class="text-red-600 neon-text-red animate-neon-pulse cursor-pointer hover:opacity-80 transition-opacity select-none pl-4 sm:pl-8 inline-flex">
+                    L<span style="margin-left: 0.2em;">I</span>
+                </span>
             </h1>
             
             <div class="flex flex-wrap gap-5 justify-center items-center">
