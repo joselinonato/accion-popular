@@ -340,9 +340,9 @@
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0 flex items-center space-x-2">
                     <div class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></div>
-                    <!-- Clic secreto en JOSE L I para abrir inicio de sesión -->
+                    <!-- Clic secreto en JOSE L I para abrir inicio de sesión (Espaciado de 0.25em) -->
                     <span onclick="openAdminLogin()" class="font-neon text-lg sm:text-2xl font-black text-white neon-text-red uppercase cursor-pointer hover:scale-105 transition-transform select-none">
-                        JOSE L<span style="margin-left: 0.18em;">I</span>
+                        JOSE L<span style="margin-left: 0.25em;">I</span>
                     </span>
                 </div>
                 <div class="flex items-center space-x-3 sm:space-x-6">
@@ -365,9 +365,9 @@
             <h1 class="font-neon text-6xl md:text-[9.5rem] font-black mb-12 leading-none tracking-tighter">
                 <span class="text-white font-black">JOSE</span> 
                 <br class="sm:hidden">
-                <!-- Clic secreto en L I para abrir administrador (Espaciado perfeccionado y cercano) -->
+                <!-- Clic secreto en L I para abrir administrador (Espaciado de 0.25em para separación perfecta y fluida) -->
                 <span onclick="openAdminLogin()" class="text-red-600 neon-text-red animate-neon-pulse cursor-pointer hover:opacity-80 transition-opacity select-none pl-4 sm:pl-8 inline-flex">
-                    L<span style="margin-left: 0.2em;">I</span>
+                    L<span style="margin-left: 0.25em;">I</span>
                 </span>
             </h1>
             
@@ -815,13 +815,6 @@
             }
 
             simAnimationId = requestAnimationFrame(runSimulationLoop);
-        }
-
-        function stopSimulation() {
-            simActive = false;
-            if(simAnimationId) cancelAnimationFrame(simAnimationId);
-            simCanvas.classList.add('hidden');
-            document.getElementById('visualizerIndicator').classList.add('hidden');
         }
 
         // --- 3. RENDERING DEL MURO DE MEDIOS (MASONRY REAL) ---
