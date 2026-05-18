@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jose L I | Muro de Medios Neón Premium</title>
+    
+    <!-- OPTIMIZACIONES DE VELOCIDAD DE CARGA EXTREMA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="fondo1.jpg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --neon-red: #ff003c;
+            --neon-red-glow: rgba(255, 0, 60, 0.6);
+            --bg-black: #030303;
+            --card-bg: rgba(10, 10, 12, 0.88);
+            --facebook-blue: #1877F2;
+            --tiktok-cyan: #00f2ea;
+            --tiktok-red: #ff0050;
+        }
+
+        /* CONFIGURACIÓN DEL FONDO CON TU IMAGEN ORIGINAL Y UN FILTRO DE GRADIENTE OSCURO */
+        body {
+            background-image: 
+                linear-gradient(rgba(3, 3, 3, 0.88), rgba(12, 12, 14, 0.95)), 
+                url('fondo1.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 1024px) {
+            body {
+                background-attachment: scroll;
+                background-position: center center;
+            }
+        }
+
+        .font-neon {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* EFECTOS NEÓN AVANZADOS */
+        .neon-text-red {
+            text-shadow: 0 0 8px var(--neon-red), 
+                         0 0 20px var(--neon-red-glow), 
+                         0 0 40px rgba(255, 0, 60, 0.2);
+        }
+
+        .neon-border-red {
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.2), 
+                        inset 0 0 15px rgba(255, 0, 60, 0.1);
+            border: 1px solid rgba(255, 0, 60, 0.5);
+        }
+
+        .neon-button {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 2px solid var(--neon-red);
+            color: var(--neon-red);
+            text-shadow: 0 0 5px var(--neon-red-glow);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.1);
+        }
+
+        .neon-button:hover {
+            background-color: var(--neon-red);
+            color: white;
+            box-shadow: 0 0 30px var(--neon-red), 0 0 10px rgba(255, 0, 60, 0.5);
+            text-shadow: none;
+            transform: translateY(-2px);
+        }
+
+        .facebook-button {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 2px solid var(--facebook-blue);
+            color: var(--facebook-blue);
+        }
+
+        .facebook-button:hover {
+            background-color: var(--facebook-blue);
+            color: white;
+            box-shadow: 0 0 25px var(--facebook-blue);
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .tiktok-button {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background-color: #000;
+            border: 2px solid #fff;
+            color: #fff;
+            box-shadow: -3px -3px 0px var(--tiktok-cyan), 3px 3px 0px var(--tiktok-red);
+        }
+
+        .tiktok-button:hover {
+            box-shadow: -6px -6px 20px var(--tiktok-cyan), 6px 6px 20px var(--tiktok-red);
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        /* GLASSMORPHISM */
+        .card-glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 0, 60, 0.12);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-glass:hover {
+            border-color: rgba(255, 0, 60, 0.6);
+            box-shadow: 0 15px 40px rgba(255, 0, 60, 0.2);
+        }
+
+        .modal-overlay {
+            display: none; 
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(3, 3, 3, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .media-container {
+            max-height: 85vh;
+            width: 95%;
+            max-width: 1200px;
+            overflow-y: auto;
+            padding: 24px;
+            border-radius: 24px;
+            background: rgba(12, 12, 14, 0.95);
+            border: 1px solid rgba(255, 0, 60, 0.25);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Personalización de Scrollbar */
+        .media-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .media-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+        .media-container::-webkit-scrollbar-thumb {
+            background: var(--neon-red);
+            border-radius: 10px;
+        }
+
+        .large-viewer-box {
+            width: 95%;
+            max-width: 960px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        #mainLargePlayer, #mainLargeImage {
+            max-height: 70vh; 
+            width: 100%;
+            border-radius: 16px;
+            background: #000;
+            object-fit: contain;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.02); }
+        }
+
+        .animate-neon-pulse {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+
+        /* DISEÑO DE MINIATURAS DEL MURO MASONRY INFINITO */
+        .media-card {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            background: #0d0d0f;
+            border: 1px solid rgba(255, 0, 60, 0.15);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            break-inside: avoid;
+        }
+
+        .media-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(3, 3, 3, 0.9) 0%, rgba(3, 3, 3, 0.1) 100%);
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+
+        .media-card:hover::before {
+            background: linear-gradient(0deg, rgba(255, 0, 60, 0.25) 0%, rgba(3, 3, 3, 0.3) 100%);
+        }
+
+        .media-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: var(--neon-red);
+            box-shadow: 0 20px 40px rgba(255, 0, 60, 0.2);
+        }
+
+        .media-icon-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0;
+            z-index: 20;
+            transition: all 0.3s ease;
+            background: var(--neon-red);
+            border-radius: 50%;
+            padding: 16px;
+            box-shadow: 0 0 25px var(--neon-red);
+        }
+
+        .media-card:hover .media-icon-badge {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .filter-btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active {
+            background-color: var(--neon-red);
+            border-color: var(--neon-red);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.5);
+        }
+
+        /* RENDIMIENTO PRO ACTIVO */
+        #galeria-seccion {
+            content-visibility: auto;
+            contain-intrinsic-size: 800px;
+        }
+
+        /* BARRA DE ESTADO DEL ADMINISTRADOR */
+        #adminStatusBar {
+            box-shadow: 0 4px 20px rgba(255, 0, 60, 0.4);
+            border-bottom: 2px solid var(--neon-red);
+        }
+
+        #toastContainer {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast-notification {
+            background: rgba(10, 10, 12, 0.9);
+            border: 1px solid var(--neon-red);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.3);
+            pointer-events: auto;
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden antialiased selection:bg-red-600 selection:text-white pb-24">
+
+    <!-- CANVAS INTERACTIVO DE FONDO -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer"></div>
+
+    <!-- BARRA DE ESTADO DEL ADMINISTRADOR (SE ACTIVA AL INICIAR SESIÓN) -->
+    <div id="adminStatusBar" class="hidden fixed top-0 left-0 w-full bg-black/95 z-[999] px-4 py-3 flex justify-between items-center backdrop-blur-md transition-all">
+        <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
+            <span class="font-neon text-[10px] sm:text-xs tracking-widest text-white font-bold">🛠️ MODO ADMINISTRADOR ACTIVO</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="openModal('adminPanelModal')" class="bg-red-950/80 hover:bg-red-900 border border-red-500/30 text-[10px] font-neon px-3 py-1.5 rounded-lg text-red-400 font-bold transition-all uppercase tracking-wider">
+                Subir Archivo
+            </button>
+            <button onclick="exportCodeForGithub()" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-neon px-3 py-1.5 rounded-lg font-bold transition-all uppercase tracking-wider">
+                Exportar para GitHub
+            </button>
+            <button onclick="logoutAdmin()" class="bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] font-neon px-3 py-1.5 rounded-lg font-bold transition-all uppercase tracking-wider">
+                Salir
+            </button>
+        </div>
+    </div>
+
+    <!-- Navegación Premium -->
+    <nav class="fixed w-full z-[100] bg-black/85 backdrop-blur-xl border-b border-red-950/40 transition-all duration-300" id="mainNav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center space-x-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></div>
+                    <!-- Clic secreto en JOSE L I para abrir inicio de sesión -->
+                    <span onclick="openAdminLogin()" class="font-neon text-lg sm:text-2xl font-black tracking-widest text-white neon-text-red uppercase cursor-pointer hover:scale-105 transition-transform select-none">JOSE L I</span>
+                </div>
+                <div class="flex items-center space-x-3 sm:space-x-6">
+                    <a href="#galeria-seccion" class="font-neon text-red-500 hover:text-white px-4 py-2 border border-red-600/30 rounded-lg hover:bg-red-600/20 text-xs sm:text-sm tracking-widest transition-all">
+                        EXPLORAR GALERÍA
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero Premium -->
+    <section id="inicio-hero" class="relative min-h-screen flex items-center justify-center pt-28 pb-16">
+        <div class="text-center z-10 px-4 max-w-4xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-950/30 border border-red-500/20 mb-6 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                <span class="text-[10px] sm:text-xs font-neon tracking-widest text-red-400 uppercase font-bold">PORTAFOLIO OFICIAL</span>
+            </div>
+            
+            <h1 class="font-neon text-6xl md:text-[9.5rem] font-black mb-12 leading-none tracking-tighter">
+                <span class="text-white">JOSE</span> 
+                <br class="sm:hidden">
+                <!-- Clic secreto en L I para abrir administrador -->
+                <span onclick="openAdminLogin()" class="text-red-600 neon-text-red animate-neon-pulse cursor-pointer hover:opacity-80 transition-opacity select-none tracking-widest pl-4 sm:pl-8">L I</span>
+            </h1>
+            
+            <div class="flex flex-wrap gap-5 justify-center items-center">
+                <!-- Facebook Button -->
+                <a href="https://www.facebook.com/Joseli.AlcaldeDeVegueta" target="_blank" aria-label="Facebook" class="facebook-button p-4 rounded-xl flex items-center justify-center bg-black/50 backdrop-blur-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                    </svg>
+                </a>
+                
+                <!-- Main Action Button -->
+                <a href="#galeria-seccion" class="neon-button font-neon px-12 py-4 rounded-xl uppercase tracking-widest text-xs sm:text-sm bg-black/50 backdrop-blur-md font-bold">
+                    Explorar Galería
+                </a>
+
+                <!-- TikTok Button -->
+                <a href="https://www.tiktok.com/@joseli_oficial?_t=8qleHRuA2Fl&_r=1" target="_blank" aria-label="TikTok" class="tiktok-button p-4 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 448 512">
+                        <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISOR DE MULTIMEDIA GRANDE (MODO CINE/DETALLE) -->
+    <div id="mediaViewer" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'mediaViewer')">
+        <div class="large-viewer-box">
+            <button onclick="closeLargeViewer()" class="mb-6 font-neon flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-bold tracking-widest shadow-lg hover:shadow-red-600/30 transition-all text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                </svg> CERRAR VISOR
+            </button>
+            
+            <div class="relative w-full rounded-2xl overflow-hidden neon-border-red bg-black/95">
+                <!-- Video Player -->
+                <video id="mainLargePlayer" controls class="w-full shadow-2xl relative z-10 hidden"></video>
+                <!-- Image Viewer -->
+                <img id="mainLargeImage" src="" referrerpolicy="no-referrer" alt="Vista Detallada" class="w-full shadow-2xl relative z-10 hidden" onerror="this.onerror=null; this.src='https://placehold.co/800x600/0d0d0f/ff003c?text=Imagen+No+Disponible'">
+                
+                <!-- Canvas para simulaciones generativas secundarias -->
+                <canvas id="simulationCanvas" class="absolute inset-0 w-full h-full hidden z-20"></canvas>
+                
+                <div id="visualizerIndicator" class="absolute bottom-4 left-4 z-30 hidden bg-black/85 backdrop-blur-sm border border-red-500/20 px-3 py-1.5 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        <span class="text-[10px] font-neon text-red-400 uppercase tracking-wider">Simulación Activa</span>
+                    </div>
+                </div>
+            </div>
+            
+            <p id="largeMediaTitle" class="mt-4 font-neon text-lg tracking-widest text-white text-center uppercase neon-text-red"></p>
+        </div>
+    </div>
+
+    <!-- SECCIÓN DE GALERÍA DE MEDIOS CENTRALIZADA -->
+    <section id="galeria-seccion" class="py-24 relative px-4 z-10 border-t border-red-950/20 bg-black/40">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="font-neon text-4xl sm:text-5xl font-black text-center mb-6 tracking-widest">
+                <span class="border-b-4 border-red-600 pb-3 uppercase">MURO DE MEDIOS</span>
+            </h2>
+            <p class="text-center text-gray-300 text-sm sm:text-base max-w-2xl mx-auto mb-12 font-medium">
+                Descubre fotos y videos de mi vida y nuestro trabajo. El muro se llenará dinámicamente y se expandirá indefinidamente hacia abajo.
+            </p>
+
+            <!-- CONTROLES DE FILTRO DUAL -->
+            <div class="flex flex-col items-center gap-6 mb-12">
+                <!-- Nivel 1: Filtro por Categorías (Temas) -->
+                <div class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 bg-black/70 p-2 rounded-2xl border border-red-950/40 backdrop-blur-md">
+                    <button onclick="filterCategory('all')" id="cat-all" class="filter-btn active border border-red-600/20 text-red-400 hover:text-white px-4 py-2.5 sm:px-5 rounded-xl text-[10px] tracking-widest uppercase">
+                        📂 Ver Todo
+                    </button>
+                    <button onclick="filterCategory('vida')" id="cat-vida" class="filter-btn border border-red-600/20 text-red-400 hover:text-white px-4 py-2.5 sm:px-5 rounded-xl text-[10px] tracking-widest uppercase">
+                        👤 Vida de José
+                    </button>
+                    <button onclick="filterCategory('turismo')" id="cat-turismo" class="filter-btn border border-red-600/20 text-red-400 hover:text-white px-4 py-2.5 sm:px-5 rounded-xl text-[10px] tracking-widest uppercase">
+                        🌴 Turismo
+                    </button>
+                    <button onclick="filterCategory('deporte')" id="cat-deporte" class="filter-btn border border-red-600/20 text-red-400 hover:text-white px-4 py-2.5 sm:px-5 rounded-xl text-[10px] tracking-widest uppercase">
+                        ⚽ Deporte
+                    </button>
+                    <button onclick="filterCategory('educacion')" id="cat-educacion" class="filter-btn border border-red-600/20 text-red-400 hover:text-white px-4 py-2.5 sm:px-5 rounded-xl text-[10px] tracking-widest uppercase">
+                        📚 Educación
+                    </button>
+                </div>
+
+                <!-- Nivel 2: Filtro por Tipo de Archivo -->
+                <div class="flex flex-wrap items-center justify-center gap-4 bg-red-950/40 px-5 py-2.5 rounded-2xl border border-red-600/20 text-xs text-gray-200 backdrop-blur-md">
+                    <div class="flex items-center gap-3">
+                        <span class="font-neon text-[9px] tracking-wider text-red-500 uppercase font-bold">Formato:</span>
+                        <label class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors">
+                            <input type="radio" name="formatFilter" value="all" checked onchange="filterFormat('all')" class="accent-red-600">
+                            <span>Todos</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors">
+                            <input type="radio" name="formatFilter" value="video" onchange="filterFormat('video')" class="accent-red-600">
+                            <span>Videos 🎥</span>
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors">
+                            <input type="radio" name="formatFilter" value="photo" onchange="filterFormat('photo')" class="accent-red-600">
+                            <span>Fotos 📷</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRID FLUIDO ESTILO MASONRY -->
+            <div id="mediaWallGrid" class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                <!-- Se rellena dinámicamente con JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE CONTRASEÑA DE ADMINISTRADOR -->
+    <div id="adminPasswordModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'adminPasswordModal')">
+        <div class="card-glass p-8 rounded-3xl max-w-sm w-full border border-red-600/40 shadow-2xl relative">
+            <h3 class="font-neon text-xl text-white neon-text-red uppercase mb-6 text-center tracking-widest">Acceso Administrador</h3>
+            <div class="mb-6">
+                <label class="block text-gray-400 text-xs font-neon uppercase tracking-wider mb-2">Contraseña</label>
+                <input type="password" id="adminPasswordInput" class="w-full bg-black/60 border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 font-sans text-center tracking-widest" placeholder="••••••••">
+                <p id="passwordError" class="text-red-500 text-xs font-neon mt-2 text-center hidden">Contraseña incorrecta</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="closeModal('adminPasswordModal')" class="flex-1 border border-white/10 hover:border-white/30 text-gray-400 hover:text-white font-neon text-xs uppercase py-3 rounded-xl transition-all">Cancelar</button>
+                <button onclick="checkAdminPassword()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-neon text-xs uppercase py-3 rounded-xl transition-all font-bold">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN DE BORRADO -->
+    <div id="deleteConfirmModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'deleteConfirmModal')">
+        <div class="card-glass p-8 rounded-3xl max-w-sm w-full border border-red-600 shadow-2xl relative">
+            <div class="w-16 h-16 mx-auto bg-red-950/80 rounded-full flex items-center justify-center border border-red-600 shadow-[0_0_15px_rgba(255,0,60,0.5)] mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </div>
+            <h3 class="font-neon text-base text-white neon-text-red uppercase mb-2 text-center tracking-wider">¿Eliminar Archivo?</h3>
+            <p class="text-xs text-gray-300 text-center leading-relaxed mb-6 font-sans">
+                Esta acción borrará permanentemente el archivo <span id="deleteFileName" class="text-red-400 font-bold"></span> de tu lista de control local.
+            </p>
+            <div class="flex gap-4">
+                <button onclick="closeModal('deleteConfirmModal')" class="flex-1 border border-white/10 hover:border-white/20 text-gray-400 hover:text-white font-neon text-[10px] uppercase py-3 rounded-xl transition-all tracking-wider">Cancelar</button>
+                <button id="confirmDeleteBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-neon text-[10px] uppercase py-3 rounded-xl transition-all font-bold tracking-wider">Sí, Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL DE ADMINISTRADOR: SUBIR NUEVA IMAGEN O VIDEO -->
+    <div id="adminPanelModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'adminPanelModal')">
+        <div class="media-container max-w-3xl bg-black/95 rounded-3xl border border-red-600/40 p-8 shadow-2xl font-sans">
+            <div class="flex justify-between items-center mb-8 border-b border-red-600/20 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 rounded-full bg-red-600 animate-pulse"></div>
+                    <h3 class="font-neon text-lg sm:text-2xl text-white neon-text-red uppercase tracking-wider">Agregar Archivo Nuevo</h3>
+                </div>
+                <button onclick="closeModal('adminPanelModal')" class="text-gray-400 hover:text-red-500 font-neon text-xs tracking-widest uppercase border border-white/10 hover:border-red-500/30 px-4 py-2 rounded-lg transition-all">Cerrar</button>
+            </div>
+
+            <!-- EXPLICACIÓN CLARA DEL SISTEMA GITHUB + ARCHIVE -->
+            <div class="mb-6 p-4 bg-yellow-950/80 border border-yellow-500/40 rounded-2xl text-xs text-yellow-200 leading-relaxed">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse"></span>
+                    <strong class="font-neon uppercase text-[9px] tracking-wider text-white">Sincronizador Estático de GitHub Pages</strong>
+                </div>
+                Todo lo que agregues o borres aquí se guardará primero en este celular/computadora. Para que el cambio sea global y permanente para todos los visitantes (incluyendo incógnitos y otros móviles), usa el botón azul <strong class="text-white">"Exportar para GitHub"</strong> que se encuentra en la barra superior. Este generará el código que debes pegar en tu repositorio.
+            </div>
+
+            <!-- Formulario para agregar Videos o Fotos -->
+            <div class="bg-red-950/10 border border-red-600/20 rounded-2xl p-6">
+                <form id="addMediaForm" onsubmit="handleAddMedia(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Formato</label>
+                            <select id="mediaTypeSelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                                <option value="photo">📷 Foto (Imagen directa .jpg o .png)</option>
+                                <option value="video">🎥 Video (Video directo .mp4)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Categoría</label>
+                            <select id="mediaCategorySelect" required class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                                <option value="vida">👤 Vida de José</option>
+                                <option value="turismo">🌴 Turismo</option>
+                                <option value="deporte">⚽ Deporte</option>
+                                <option value="educacion">📚 Educación</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Título del Archivo</label>
+                            <input type="text" id="mediaTitleInput" required placeholder="Ej. PRONOEI LAS TRAVESURAS" class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-[10px] font-neon uppercase mb-2">Enlace Directo de Archive.org</label>
+                        <input type="url" id="mediaUrlInput" required placeholder="https://archive.org/download/..." class="w-full bg-black border border-red-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 text-xs">
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-neon text-xs uppercase py-3 rounded-xl transition-all font-bold tracking-widest flex items-center justify-center gap-2">
+                        <span>Añadir al muro local</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EXPORTACIÓN DE CÓDIGO (EL PASO FINAL) -->
+    <div id="exportCodeModal" class="modal-overlay p-4" onclick="handleOutsideClick(event, 'exportCodeModal')">
+        <div class="media-container max-w-2xl bg-black/95 rounded-3xl border border-blue-500/40 p-8 shadow-2xl font-sans">
+            <div class="flex justify-between items-center mb-6 border-b border-blue-600/20 pb-4">
+                <h3 class="font-neon text-lg sm:text-xl text-white neon-text-red uppercase tracking-wider">📋 Exportar Código para GitHub</h3>
+                <button onclick="closeModal('exportCodeModal')" class="text-gray-400 hover:text-red-500 font-neon text-xs tracking-widest uppercase">Cerrar</button>
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                Para que todos los visitantes (incluyendo incógnitos) vean tu galaría actualizada, copia todo el código del cuadro de abajo, entra a tu repositorio de GitHub, edita tu archivo <strong class="text-white">index.html</strong>, borra todo lo que tiene, pega este código nuevo y guárdalo.
+            </p>
+            <div class="relative mb-6">
+                <textarea id="exportedCodeTextarea" readonly class="w-full h-64 bg-zinc-950 border border-blue-500/20 rounded-xl p-4 text-xs font-mono text-cyan-400 focus:outline-none focus:border-blue-500"></textarea>
+            </div>
+            <button onclick="copyExportedCode()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-neon text-xs uppercase py-3.5 rounded-xl transition-all font-bold tracking-widest">
+                Copiar Todo el Código de la Página
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================================
+        // 🌟 LISTA DE CONTENIDOS EN LA NUBE (ARCHIVE.ORG) - ¡EDITA ESTA SECCIÓN PARA ACTUALIZAR TU WEB!
+        // -----------------------------------------------------------------------------------------
+        // Cuando subas un archivo nuevo a Archive.org, agrégalo aquí abajo siguiendo este formato.
+        // - 'type': puede ser 'photo' (para fotos) o 'video' (para videos).
+        // - 'category': puede ser 'vida', 'turismo', 'deporte' o 'educacion'.
+        // - 'title': El título que aparecerá en la tarjeta de tu muro de medios.
+        // - 'url': El enlace directo de descarga de tu archivo de Archive.org.
+        // =========================================================================================
+        const mediaItems = [
+            { 
+                id: '1', 
+                type: 'photo', 
+                category: 'educacion', 
+                title: 'PRONOEI VIRGEN DEL CARMEN - C.P LA FLORIDA', 
+                url: 'https://ia802801.us.archive.org/5/items/gemini-generated-image-fn-3gvpfn-3gvpfn-3g/Gemini_Generated_Image_1qm5711qm5711qm5.png' 
+            },
+            { 
+                id: '2', 
+                type: 'photo', 
+                category: 'vida', 
+                title: 'PRONOEI TRAVESURAS - C.P PRIMAVERA', 
+                url: 'https://ia802801.us.archive.org/5/items/gemini-generated-image-fn-3gvpfn-3gvpfn-3g/Gemini_Generated_Image_1qm5711qm5711qm5.png' 
+            }
+            // Agrega más elementos aquí abajo de la misma manera...
+        ];
+        // =========================================================================================
+
+        let selectedCategory = 'all';
+        let selectedFormat = 'all';
+        let isAdmin = false;
+
+        // Recuperar ítems agregados localmente (para que la sesión local no los pierda en borrador)
+        function getLocalMediaItems() {
+            try {
+                const items = localStorage.getItem('jose_li_local_media');
+                return items ? JSON.parse(items) : [];
+            } catch(e) {
+                return [];
+            }
+        }
+
+        // Convertidor inteligente para URLs de Archive.org y Drive
+        function cleanAndConvertUrl(url, type) {
+            let cleanUrl = url.trim();
+
+            if (cleanUrl.includes('drive.google.com/file/d/')) {
+                const match = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    const fileId = match[1];
+                    return `https://docs.google.com/uc?export=download&id=${fileId}`;
+                }
+            }
+            
+            if (cleanUrl.includes('archive.org/details/')) {
+                cleanUrl = cleanUrl.replace('archive.org/details/', 'archive.org/download/');
+            }
+            
+            return cleanUrl;
+        }
+
+        // --- 1. FONDO DE PARTÍCULAS INTERACTIVO DE NEÓN (GRID DINÁMICO) ---
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgParticles = [];
+        const maxParticles = 40;
+
+        function resizeBgCanvas() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+        }
+
+        class BgParticle {
+            constructor() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.18;
+                this.speedY = (Math.random() - 0.5) * 0.18;
+                this.alpha = Math.random() * 0.35 + 0.08;
+                this.color = Math.random() > 0.45 ? '255, 0, 60' : '255, 255, 255';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > bgCanvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > bgCanvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+                bgCtx.shadowBlur = 6;
+                bgCtx.shadowColor = `rgba(${this.color}, 0.4)`;
+                bgCtx.fill();
+                bgCtx.shadowBlur = 0;
+            }
+        }
+
+        function initBgParticles() {
+            bgParticles = [];
+            for (let i = 0; i < maxParticles; i++) {
+                bgParticles.push(new BgParticle());
+            }
+        }
+
+        function animateBgParticles() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            
+            bgCtx.strokeStyle = 'rgba(255, 0, 60, 0.012)';
+            bgCtx.lineWidth = 1;
+            const gridSize = 120;
+            for(let x=0; x < bgCanvas.width; x += gridSize){
+                bgCtx.beginPath();
+                bgCtx.moveTo(x, 0);
+                bgCtx.lineTo(x, bgCanvas.height);
+                bgCtx.stroke();
+            }
+            for(let y=0; y < bgCanvas.height; y += gridSize){
+                bgCtx.beginPath();
+                bgCtx.moveTo(0, y);
+                bgCtx.lineTo(bgCanvas.width, y);
+                bgCtx.stroke();
+            }
+
+            for (let i = 0; i < bgParticles.length; i++) {
+                bgParticles[i].update();
+                bgParticles[i].draw();
+
+                for (let j = i; j < bgParticles.length; j++) {
+                    const dx = bgParticles[i].x - bgParticles[j].x;
+                    const dy = bgParticles[i].y - bgParticles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        bgCtx.beginPath();
+                        bgCtx.strokeStyle = `rgba(255, 0, 60, ${0.1 * (1 - distance/150)})`;
+                        bgCtx.lineWidth = 0.5;
+                        bgCtx.moveTo(bgParticles[i].x, bgParticles[i].y);
+                        bgCtx.lineTo(bgParticles[j].x, bgParticles[j].y);
+                        bgCtx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateBgParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            resizeBgCanvas();
+            initBgParticles();
+        });
+
+        // --- 2. SISTEMA INTERACTIVO DE SIMULACIÓN DE PARTÍCULAS DE ARTE ---
+        const simCanvas = document.getElementById('simulationCanvas');
+        const simCtx = simCanvas.getContext('2d');
+        let simAnimationId = null;
+        let simActive = false;
+        let simParticles = [];
+
+        function initSimulation() {
+            simActive = true;
+            simCanvas.classList.remove('hidden');
+            simParticles = [];
+            
+            const playerRect = document.getElementById('mainLargePlayer').getBoundingClientRect();
+            simCanvas.width = playerRect.width || 800;
+            simCanvas.height = playerRect.height || 450;
+            
+            const numParticles = 60;
+            for(let i=0; i<numParticles; i++) {
+                simParticles.push({
+                    x: Math.random() * simCanvas.width,
+                    y: Math.random() * simCanvas.height,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    size: Math.random() * 2.5 + 1
+                });
+            }
+            
+            document.getElementById('visualizerIndicator').classList.remove('hidden');
+            runSimulationLoop();
+        }
+
+        function runSimulationLoop() {
+            if(!simActive) return;
+            simCtx.fillStyle = 'rgba(5, 5, 5, 0.2)'; 
+            simCtx.fillRect(0, 0, simCanvas.width, simCanvas.height);
+            
+            simParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if(p.x < 0 || p.x > simCanvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > simCanvas.height) p.vy *= -1;
+
+                simCtx.beginPath();
+                simCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                simCtx.fillStyle = '#ff003c'; 
+                simCtx.shadowColor = '#ff003c';
+                simCtx.shadowBlur = 6;
+                simCtx.fill();
+                simCtx.shadowBlur = 0;
+            });
+
+            for(let i=0; i<simParticles.length; i++) {
+                for(let j=i+1; j<simParticles.length; j++) {
+                    const dist = Math.hypot(simParticles[i].x - simParticles[j].x, simParticles[i].y - simParticles[j].y);
+                    if(dist < 80) {
+                        simCtx.beginPath();
+                        simCtx.strokeStyle = `rgba(255, 0, 60, ${0.8 - dist/80})`;
+                        simCtx.lineWidth = 0.5;
+                        simCtx.moveTo(simParticles[i].x, simParticles[i].y);
+                        simCtx.lineTo(simParticles[j].x, simParticles[j].y);
+                        simCtx.stroke();
+                    }
+                }
+            }
+
+            simAnimationId = requestAnimationFrame(runSimulationLoop);
+        }
+
+        function stopSimulation() {
+            simActive = false;
+            if(simAnimationId) cancelAnimationFrame(simAnimationId);
+            simCanvas.classList.add('hidden');
+            document.getElementById('visualizerIndicator').classList.add('hidden');
+        }
+
+        // --- 3. RENDERING DEL MURO DE MEDIOS (MASONRY REAL) ---
+        function renderMediaWall() {
+            const gridContainer = document.getElementById('mediaWallGrid');
+            if (!gridContainer) return;
+
+            // Unimos los elementos estáticos y los temporales locales agregados
+            const localItems = getLocalMediaItems();
+            
+            // Filtrar los elementos de la lista estática (mediaItems) que hayan sido eliminados en la sesión local
+            const deletedStaticIds = JSON.parse(localStorage.getItem('jose_li_deleted_static_ids') || '[]');
+            const activeStaticItems = mediaItems.filter(item => !deletedStaticIds.includes(item.id));
+            
+            const mergedList = [...localItems, ...activeStaticItems];
+
+            // Filtro por categorías y formatos
+            const filteredList = mergedList.filter(item => {
+                const matchesCategory = (selectedCategory === 'all') || (item.category === selectedCategory);
+                const matchesFormat = (selectedFormat === 'all') || (item.type === selectedFormat);
+                return matchesCategory && matchesFormat;
+            });
+
+            gridContainer.innerHTML = '';
+
+            if (filteredList.length === 0) {
+                gridContainer.innerHTML = `<p class="col-span-full text-center text-gray-400 font-neon py-16 uppercase text-[10px] tracking-widest">Sin archivos para esta selección.</p>`;
+                return;
+            }
+
+            filteredList.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'media-card card-glass rounded-3xl overflow-hidden shadow-xl flex flex-col justify-end p-6 mb-6 break-inside-avoid relative';
+                
+                const heightClass = index % 3 === 0 ? 'h-64' : (index % 3 === 1 ? 'h-80' : 'h-72');
+                card.classList.add(heightClass);
+                
+                card.setAttribute('onclick', `handleCardClick(event, '${item.type}', '${item.url}', \`${item.title.replace(/'/g, "\\'")}\`)`);
+
+                // Thumbnail seguro
+                const cleanTitle = encodeURIComponent(item.title);
+                let thumbBg = `https://placehold.co/600x400/0d0d10/ff003c?text=${cleanTitle}`;
+                if (item.type === 'photo' && item.url.startsWith('http')) {
+                    thumbBg = item.url;
+                }
+
+                card.style.backgroundImage = `url('${thumbBg}')`;
+                card.style.backgroundSize = 'cover';
+                card.style.backgroundPosition = 'center';
+
+                // Icono neón
+                const iconSvg = item.type === 'video' 
+                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>`
+                    : `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>`;
+
+                const categoryLabels = {
+                    vida: 'VIDA DE JOSÉ',
+                    turismo: 'TURISMO',
+                    deporte: 'DEPORTE',
+                    educacion: 'EDUCACIÓN'
+                };
+                const tagLabel = categoryLabels[item.category] || 'GENERAL';
+
+                // Panel de administración de tarjetas en vivo (si se inició sesión como Admin)
+                let adminDeleteBtnHtml = '';
+                if (isAdmin) {
+                    adminDeleteBtnHtml = `
+                        <div class="absolute top-4 right-4 z-40 flex items-center gap-2">
+                            <!-- Botón para Eliminar temporal/localmente de la lista actual -->
+                            <button onclick="requestDeleteMedia(event, '${item.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl border border-red-500 shadow-lg hover:scale-105 active:scale-95 transition-all" title="Eliminar del borrador local">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    ${adminDeleteBtnHtml}
+                    <div class="media-icon-badge">
+                        ${iconSvg}
+                    </div>
+                    <div class="relative z-20 w-full">
+                        <div class="flex flex-wrap gap-1.5 mb-2">
+                            <span class="text-[8px] bg-red-950/90 text-red-400 px-2.5 py-1 rounded uppercase font-neon tracking-widest border border-red-500/20 font-bold">${tagLabel}</span>
+                            <span class="text-[8px] bg-black/80 text-gray-300 px-2.5 py-1 rounded uppercase font-neon tracking-widest border border-white/10 font-bold">${item.type === 'video' ? 'VIDEO 🎥' : 'FOTO 📷'}</span>
+                        </div>
+                        <h3 class="font-neon text-xs sm:text-sm font-bold text-white uppercase tracking-wide truncate max-w-full drop-shadow-md">${item.title}</h3>
+                    </div>
+                `;
+
+                gridContainer.appendChild(card);
+            });
+        }
+
+        // Manejar el clic en la tarjeta de manera segura
+        window.handleCardClick = function(event, type, url, title) {
+            if (event.target.closest('button')) {
+                return;
+            }
+            openLargeViewer(type, url, title);
+        }
+
+        // Filtros de categoría
+        window.filterCategory = function(cat) {
+            selectedCategory = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`cat-${cat}`).classList.add('active');
+            renderMediaWall();
+        }
+
+        // Filtros de formatos (Fotos/Videos)
+        window.filterFormat = function(format) {
+            selectedFormat = format;
+            renderMediaWall();
+        }
+
+        // --- 4. CONTROLADORES DE MODALES Y VISUALIZADOR ---
+        window.openModal = function(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('active'); 
+                document.body.style.overflow = 'hidden'; 
+            }
+        }
+
+        window.closeModal = function(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('active'); 
+                document.body.style.overflow = 'auto'; 
+            }
+        }
+
+        window.handleOutsideClick = function(event, id) {
+            if(event.target.id === id) {
+                if(id === 'mediaViewer') {
+                    closeLargeViewer();
+                } else {
+                    closeModal(id);
+                }
+            }
+        }
+
+        window.openLargeViewer = function(type, url, title) {
+            const viewer = document.getElementById('mediaViewer');
+            const player = document.getElementById('mainLargePlayer');
+            const image = document.getElementById('mainLargeImage');
+            const titleElem = document.getElementById('largeMediaTitle');
+
+            player.classList.add('hidden');
+            image.classList.add('hidden');
+            player.pause();
+            player.src = '';
+            image.src = '';
+            stopSimulation();
+
+            titleElem.textContent = title || "VISTA MULTIMEDIA";
+
+            const cleanUrl = cleanAndConvertUrl(url, type);
+
+            if (type === 'video') {
+                player.classList.remove('hidden');
+                player.src = cleanUrl;
+                viewer.classList.add('active');
+                player.play().catch(error => {
+                    console.log("Activando modo visualizador fallback generativo...");
+                    initSimulation();
+                });
+                player.onerror = function() {
+                    initSimulation();
+                };
+            } else {
+                image.classList.remove('hidden');
+                image.src = cleanUrl;
+                viewer.classList.add('active');
+            }
+        }
+
+        window.closeLargeViewer = function() {
+            const viewer = document.getElementById('mediaViewer');
+            const player = document.getElementById('mainLargePlayer');
+            
+            viewer.classList.remove('active');
+            player.pause();
+            player.src = '';
+            stopSimulation();
+        }
+
+        // --- 5. ADMINISTRADOR PRIVADO (CÓDIGO SEGURO SÓLO HTML) ---
+        window.openAdminLogin = function() {
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('passwordError').classList.add('hidden');
+            openModal('adminPasswordModal');
+        }
+
+        window.checkAdminPassword = function() {
+            const input = document.getElementById('adminPasswordInput').value.trim();
+            if (input.toLowerCase() === 'joseli') {
+                closeModal('adminPasswordModal');
+                
+                isAdmin = true;
+                sessionStorage.setItem('isAdminLi', 'true');
+                
+                applyAdminModeUI();
+                showToast("¡Modo Administrador Activo!");
+            } else {
+                const err = document.getElementById('passwordError');
+                err.classList.remove('hidden');
+                err.textContent = "Contraseña incorrecta. Intente de nuevo.";
+            }
+        }
+
+        window.applyAdminModeUI = function() {
+            if (isAdmin) {
+                document.getElementById('adminStatusBar').classList.remove('hidden');
+                document.getElementById('mainNav').classList.add('mt-12'); // Empujar Nav
+            } else {
+                document.getElementById('adminStatusBar').classList.add('hidden');
+                document.getElementById('mainNav').classList.remove('mt-12');
+            }
+            renderMediaWall();
+        }
+
+        window.logoutAdmin = function() {
+            isAdmin = false;
+            sessionStorage.removeItem('isAdminLi');
+            applyAdminModeUI();
+            showToast("Sesión cerrada.");
+        }
+
+        // Agregar nuevo archivo localmente al borrador actual
+        window.handleAddMedia = function(e) {
+            e.preventDefault();
+            const type = document.getElementById('mediaTypeSelect').value;
+            const category = document.getElementById('mediaCategorySelect').value;
+            const title = document.getElementById('mediaTitleInput').value.trim();
+            const url = document.getElementById('mediaUrlInput').value.trim();
+
+            if (!title || !url) return;
+
+            const finalUrl = cleanAndConvertUrl(url, type);
+            const newItem = {
+                id: 'local_' + Date.now(),
+                type: type,
+                category: category,
+                title: title.toUpperCase(),
+                url: finalUrl
+            };
+
+            const localItems = getLocalMediaItems();
+            localItems.unshift(newItem);
+            localStorage.setItem('jose_li_local_media', JSON.stringify(localItems));
+
+            document.getElementById('mediaTitleInput').value = '';
+            document.getElementById('mediaUrlInput').value = '';
+            
+            closeModal('adminPanelModal');
+            showToast("Añadido localmente. ¡No olvides exportar!");
+            renderMediaWall();
+        }
+
+        // Solicitar borrado de un elemento
+        let pendingDeleteId = null;
+        window.requestDeleteMedia = function(event, id) {
+            event.stopPropagation();
+            pendingDeleteId = id;
+
+            const localItems = getLocalMediaItems();
+            const mergedList = [...localItems, ...mediaItems];
+            const foundItem = mergedList.find(i => i.id === id);
+            const titleText = foundItem ? foundItem.title : "este archivo";
+
+            document.getElementById('deleteFileName').textContent = `"${titleText}"`;
+            openModal('deleteConfirmModal');
+        }
+
+        // Ejecutar borrado final
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            if (pendingDeleteId) {
+                closeModal('deleteConfirmModal');
+                
+                // Si el elemento es de la lista estática (mediaItems), lo guardamos temporalmente como excluido en localStorage
+                if (!pendingDeleteId.startsWith('local_')) {
+                    const deletedStaticIds = JSON.parse(localStorage.getItem('jose_li_deleted_static_ids') || '[]');
+                    if (!deletedStaticIds.includes(pendingDeleteId)) {
+                        deletedStaticIds.push(pendingDeleteId);
+                        localStorage.setItem('jose_li_deleted_static_ids', JSON.stringify(deletedStaticIds));
+                    }
+                    showToast("Archivo eliminado del borrador.");
+                } else {
+                    const localItems = getLocalMediaItems();
+                    const filtered = localItems.filter(item => item.id !== pendingDeleteId);
+                    localStorage.setItem('jose_li_local_media', JSON.stringify(filtered));
+                    showToast("Archivo eliminado localmente.");
+                }
+                
+                pendingDeleteId = null;
+                renderMediaWall();
+            }
+        });
+
+        // 📋 EXPORTADOR DEL CÓDIGO ACTUALIZADO PARA GITHUB
+        window.exportCodeForGithub = function() {
+            // Obtenemos la lista combinada completa filtrando los estáticos eliminados
+            const localItems = getLocalMediaItems();
+            const deletedStaticIds = JSON.parse(localStorage.getItem('jose_li_deleted_static_ids') || '[]');
+            const activeStaticItems = mediaItems.filter(item => !deletedStaticIds.includes(item.id));
+            
+            const fullCombinedList = [...localItems, ...activeStaticItems];
+
+            // Re-mapear para normalizar la lista eliminando prefijos "local_" en los IDs estáticos exportados
+            const cleanExportedList = fullCombinedList.map((item, index) => ({
+                id: (index + 1).toString(),
+                type: item.type,
+                category: item.category,
+                title: item.title,
+                url: item.url
+            }));
+
+            // Generar todo el código HTML de este archivo reemplazando el bloque del array
+            let entireHtml = document.documentElement.outerHTML;
+            
+            // Reemplazar la sección "const mediaItems = [...];" con los nuevos elementos actualizados
+            const arrayRegex = /const\s+mediaItems\s*=\s*\[[\s\S]*?\];/;
+            const replacementString = `const mediaItems = ${JSON.stringify(cleanExportedList, null, 8)};`;
+            
+            entireHtml = entireHtml.replace(arrayRegex, replacementString);
+            
+            // Envolver en la estructura DOCTYPE para que sea un archivo HTML perfecto
+            const completeHtmlOutput = `<!DOCTYPE html>\n<html lang="es">\n` + entireHtml + `\n</html>`;
+
+            document.getElementById('exportedCodeTextarea').value = completeHtmlOutput;
+            openModal('exportCodeModal');
+        }
+
+        window.copyExportedCode = function() {
+            const textarea = document.getElementById('exportedCodeTextarea');
+            textarea.select();
+            document.execCommand('copy');
+            
+            // Limpiar los borradores locales temporales ya que ahora se integrarán estáticamente en el nuevo código de su GitHub
+            localStorage.removeItem('jose_li_local_media');
+            localStorage.removeItem('jose_li_deleted_static_ids');
+            
+            showToast("¡Código copiado! Tu borrador se ha limpiado. Pégalo en tu GitHub index.html.");
+            closeModal('exportCodeModal');
+            
+            // Forzar actualización inmediata del muro
+            renderMediaWall();
+        };
+
+        // --- NOTIFICACIONES TOAST ---
+        window.showToast = function(message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Carga Inicial
+        window.onload = function() {
+            resizeBgCanvas();
+            initBgParticles();
+            
+            setTimeout(() => {
+                animateBgParticles();
+            }, 50);
+
+            if (sessionStorage.getItem('isAdminLi') === 'true') {
+                isAdmin = true;
+                applyAdminModeUI();
+            } else {
+                renderMediaWall();
+            }
+        };
+    </script>
+</body>
+</html>
